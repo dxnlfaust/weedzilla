@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import { HomeFeed } from "@/components/posts/HomeFeed";
+import { notFound } from "next/navigation";
+import { PostGrid } from "@/components/posts/PostGrid";
+import type { Species } from "@/lib/types/database";
 
 interface PostWithJoins {
   id: string;
@@ -12,16 +14,30 @@ interface PostWithJoins {
   votes: { id: string; user_id: string }[];
 }
 
-export default async function HomePage() {
+interface SpeciesDetailPageProps {
+  params: Promise<{ speciesId: string }>;
+}
+
+export default async function SpeciesDetailPage({
+  params,
+}: SpeciesDetailPageProps) {
+  const { speciesId } = await params;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Get current week from the server (AEST)
-  const { data: currentWeek } = await supabase.rpc("current_week_year");
+  // Fetch species info
+  const { data: speciesData } = await supabase
+    .from("species")
+    .select("*")
+    .eq("id", Number(speciesId))
+    .single();
 
-  // Fetch this week's posts, sorted by vote count
+  const species = speciesData as Species | null;
+  if (!species) notFound();
+
+  // Fetch posts for this species
   const { data } = await supabase
     .from("posts")
     .select(
@@ -32,9 +48,10 @@ export default async function HomePage() {
       votes (id, user_id)
     `
     )
-    .eq("week_year", currentWeek || "")
+    .eq("species_id", Number(speciesId))
     .eq("is_hidden", false)
     .eq("is_removed", false)
+    .order("week_year", { ascending: false })
     .order("created_at", { ascending: false });
 
   const posts = (data || []) as unknown as PostWithJoins[];
@@ -53,24 +70,22 @@ export default async function HomePage() {
       : false,
   }));
 
-  // Sort by vote count descending
-  transformedPosts.sort((a, b) => b.vote_count - a.vote_count);
-
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-carbon mb-1">
-          This Week&apos;s Weeds
+        <h1 className="text-2xl font-bold text-carbon italic mb-1">
+          {species.scientific_name}
         </h1>
-        <p className="text-gray-500">
-          Vote for the best weed removal of the week!
-        </p>
+        {species.common_names.length > 0 && (
+          <p className="text-gray-500">{species.common_names.join(", ")}</p>
+        )}
+        {species.family && (
+          <p className="text-sm text-gray-400 mt-0.5">
+            Family: {species.family}
+          </p>
+        )}
       </div>
-      <HomeFeed
-        initialPosts={transformedPosts}
-        currentWeek={currentWeek || ""}
-        userId={user?.id || null}
-      />
+      <PostGrid posts={transformedPosts} />
     </div>
   );
 }

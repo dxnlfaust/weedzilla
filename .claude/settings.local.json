@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx next build)",
+      "Bash(for sp in \"Acetosa sagittata\" \"Lantana camara\" \"Ligustrum sinense\" \"Ligustrum lucidum\" \"Cinnamomum camphora\" \"Olea europaea subsp. cuspidata\" \"Asparagus aethiopicus\" \"Anredera cordifolia\" \"Tradescantia fluminensis\" \"Ipomoea cairica\" \"Ipomoea indica\" \"Ochna serrulata\" \"Senna pendula\" \"Erythrina crista-galli\" \"Solanum mauritianum\" \"Chrysanthemoides monilifera\" \"Rubus fruticosus agg.\" \"Genista monspessulana\" \"Cytisus scoparius\" \"Ludwigia peruviana\" \"Salvinia molesta\" \"Eichhornia crassipes\" \"Ageratina adenophora\" \"Bidens pilosa\" \"Conyza bonariensis\" \"Ehrharta erecta\" \"Chloris gayana\" \"Araujia sericifera\" \"Cardiospermum grandiflorum\" \"Delairea odorata\" \"Ricinus communis\" \"Schinus terebinthifolia\")",
+      "Bash(do if ! grep -q \"$sp\" \"C:/Users/djfau/OneDrive/Documents/WebDev/weedzilla/supabase/seed.sql\")",
+      "Bash(then echo \"MISSING: $sp\")",
+      "Bash(fi)",
+      "Bash(done)"
+    ]
+  }
+}

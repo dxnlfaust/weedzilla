@@ -39,7 +39,7 @@ export default async function HomePage() {
 
   const posts = (data || []) as unknown as PostWithJoins[];
 
-  const transformedPosts = posts.map((post) => ({
+  const transformedPosts = posts.filter((post) => post.species != null && post.profile != null).map((post) => ({
     id: post.id,
     image_url: post.image_url,
     caption: post.caption,

@@ -50,7 +50,7 @@ export default async function PublicProfilePage({
     votes: { id: string; user_id: string }[];
   }[];
 
-  const transformedPosts = posts.map((post) => ({
+  const transformedPosts = posts.filter((post) => post.species != null).map((post) => ({
     id: post.id,
     image_url: post.image_url,
     caption: post.caption,

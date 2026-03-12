@@ -58,7 +58,7 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
 
     const rows = (data || []) as unknown as PostRow[];
 
-    const transformed = rows.map((post) => ({
+    const transformed = rows.filter((post) => post.species != null && post.profile != null).map((post) => ({
       id: post.id,
       image_url: post.image_url,
       caption: post.caption,

@@ -367,6 +367,14 @@ export interface Database {
         };
         Returns: undefined;
       };
+      get_previous_week_year: {
+        Args: Record<string, never>;
+        Returns: string;
+      };
+      process_weekly_winners: {
+        Args: { p_week_year: string };
+        Returns: number;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

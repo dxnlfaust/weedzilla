@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNav } from "./MobileNav";
-import { Menu, X, Upload, LogOut, User } from "lucide-react";
+import { CrownBadge } from "@/components/profile/CrownBadge";
+import { Menu, X, Upload, LogOut, User, Trophy } from "lucide-react";
 
 export function Navbar() {
-  const { user, loading, signOut } = useAuth();
+  const { user, crownCount, loading, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -33,6 +34,13 @@ export function Navbar() {
             >
               Species
             </Link>
+            <Link
+              href="/winners"
+              className="text-sm font-medium hover:text-white/80 transition-colors duration-150 flex items-center gap-1"
+            >
+              <Trophy className="h-4 w-4" />
+              Winners
+            </Link>
             {user && (
               <Link
                 href="/upload"
@@ -56,8 +64,10 @@ export function Navbar() {
                 >
                   <User className="h-4 w-4" />
                   Profile
+                  {crownCount > 0 && <CrownBadge count={crownCount} />}
                 </Link>
                 <button
+                  type="button"
                   onClick={signOut}
                   className="flex items-center gap-1 text-sm font-medium hover:text-white/80 transition-colors duration-150"
                 >
@@ -85,6 +95,7 @@ export function Navbar() {
 
           {/* Mobile hamburger */}
           <button
+            type="button"
             className="md:hidden p-1"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -102,6 +113,7 @@ export function Navbar() {
       {mobileOpen && (
         <MobileNav
           user={user}
+          crownCount={crownCount}
           onSignOut={signOut}
           onClose={() => setMobileOpen(false)}
         />

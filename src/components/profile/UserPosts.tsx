@@ -75,8 +75,9 @@ export function UserPosts({ posts: initialPosts, isOwner }: UserPostsProps) {
             </div>
           </div>
           <button
+            type="button"
             onClick={() => handleDelete(post.id, post.image_url)}
-            className="absolute top-2 right-2 bg-white/90 hover:bg-red hover:text-white text-gray-500 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-150"
+            className="absolute top-2 right-2 bg-white/90 hover:bg-red hover:text-white text-gray-500 rounded-full p-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-150"
             aria-label="Delete post"
           >
             <Trash2 className="h-4 w-4" />

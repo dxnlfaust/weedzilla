@@ -11,9 +11,10 @@ import { Upload, X, ImageIcon, Loader2 } from "lucide-react";
 
 interface UploadFormProps {
   userId: string;
+  accountCreatedAt: string;
 }
 
-export function UploadForm({ userId }: UploadFormProps) {
+export function UploadForm({ userId, accountCreatedAt }: UploadFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -72,6 +73,26 @@ export function UploadForm({ userId }: UploadFormProps) {
     setUploading(true);
 
     try {
+      // Rate limit: new accounts (< 7 days) capped at 3 posts/day
+      const accountAge = Date.now() - new Date(accountCreatedAt).getTime();
+      const sevenDays = 7 * 24 * 60 * 60 * 1000;
+      if (accountAge < sevenDays) {
+        const supabaseCheck = createClient();
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const { count } = await supabaseCheck
+          .from("posts")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", userId)
+          .gte("created_at", todayStart.toISOString());
+        if ((count ?? 0) >= 3) {
+          toast.error(
+            "New accounts can upload up to 3 posts per day for the first week."
+          );
+          setUploading(false);
+          return;
+        }
+      }
       const imageUrl = await uploadPostImage(file, userId);
       const weekYear = getCurrentWeekYear();
 

@@ -46,5 +46,20 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Ban enforcement on write-capable routes
+  if (isProtected && !isPublicProfile && user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_banned")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.is_banned) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/banned";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }

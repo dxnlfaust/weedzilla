@@ -45,6 +45,24 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = data as unknown as PostWithJoins | null;
   if (!post) notFound();
 
+  // Fetch comments for this post
+  const { data: commentsRaw } = await supabase
+    .from("comments")
+    .select(
+      `id, content, created_at, user_id,
+      profile:user_id (id, display_name, avatar_url)`
+    )
+    .eq("post_id", postId)
+    .order("created_at", { ascending: true });
+
+  const comments = (commentsRaw || []) as unknown as {
+    id: string;
+    content: string;
+    created_at: string;
+    user_id: string;
+    profile: { id: string; display_name: string; avatar_url: string | null };
+  }[];
+
   const transformedPost = {
     id: post.id,
     image_url: post.image_url,
@@ -59,5 +77,11 @@ export default async function PostPage({ params }: PostPageProps) {
       : false,
   };
 
-  return <PostDetail post={transformedPost} />;
+  return (
+    <PostDetail
+      post={transformedPost}
+      userId={user?.id ?? null}
+      comments={comments}
+    />
+  );
 }

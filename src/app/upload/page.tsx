@@ -14,7 +14,7 @@ export default async function UploadPage() {
     <div className="max-w-xl mx-auto">
       <h1 className="text-2xl font-bold text-carbon mb-6">Upload a Weed</h1>
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <UploadForm userId={user.id} />
+        <UploadForm userId={user.id} accountCreatedAt={user.created_at} />
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
+import { ReportButton } from "@/components/reports/ReportButton";
+import { CommentSection } from "@/components/comments/CommentSection";
+import type { CommentData } from "@/components/comments/CommentItem";
 import { formatRelativeTime } from "@/lib/utils/formatters";
 
 interface PostDetailProps {
@@ -24,9 +27,11 @@ interface PostDetailProps {
     vote_count: number;
     user_has_voted: boolean;
   };
+  userId?: string | null;
+  comments?: CommentData[];
 }
 
-export function PostDetail({ post }: PostDetailProps) {
+export function PostDetail({ post, userId, comments }: PostDetailProps) {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -74,16 +79,36 @@ export function PostDetail({ post }: PostDetailProps) {
                 {formatRelativeTime(post.created_at)}
               </span>
             </div>
-            <VoteButton
-              postId={post.id}
-              speciesId={post.species.id}
-              weekYear={post.week_year}
-              initialHasVoted={post.user_has_voted}
-              initialVoteCount={post.vote_count}
-            />
+            <div className="flex items-center gap-2">
+              {userId && userId !== post.profile.id && (
+                <ReportButton
+                  targetType="post"
+                  targetId={post.id}
+                  userId={userId}
+                />
+              )}
+              <VoteButton
+                postId={post.id}
+                speciesId={post.species.id}
+                weekYear={post.week_year}
+                initialHasVoted={post.user_has_voted}
+                initialVoteCount={post.vote_count}
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Comments */}
+      {comments && (
+        <div className="mt-4 bg-white border border-gray-200 rounded-lg p-4">
+          <CommentSection
+            postId={post.id}
+            initialComments={comments}
+            userId={userId ?? null}
+          />
+        </div>
+      )}
     </div>
   );
 }

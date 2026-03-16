@@ -114,7 +114,6 @@ export default async function WinnersPage() {
                           <div className="flex items-center justify-between mt-1.5">
                             <Link
                               href={`/profile/${winner.profile!.id}`}
-                              onClick={(e) => e.stopPropagation()}
                               className="text-xs text-gray-500 hover:text-carbon transition-colors line-clamp-1"
                             >
                               {winner.profile!.display_name}

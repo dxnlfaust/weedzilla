@@ -8,7 +8,11 @@
       "Bash(fi)",
       "Bash(done)",
       "Bash(find /c/Users/djfau/OneDrive/Documents/WebDev/weedzilla/src/app/api -type f -name *.ts)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }

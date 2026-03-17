@@ -40,14 +40,12 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {isBA ? (
-        <Link href={`/post/${post.id}`} className="block">
-          <CompareSlider
-            beforeSrc={post.image_url}
-            afterSrc={post.image_url_after!}
-            alt={altText}
-            compact
-          />
-        </Link>
+        <CompareSlider
+          beforeSrc={post.image_url}
+          afterSrc={post.image_url_after!}
+          alt={altText}
+          compact
+        />
       ) : (
         <Link href={`/post/${post.id}`} className="block">
           <img
@@ -58,15 +56,17 @@ export function PostCard({ post }: PostCardProps) {
         </Link>
       )}
       <div className="p-3 space-y-2">
-        {post.species ? (
-          <SpeciesBadge
-            speciesId={post.species.id}
-            scientificName={post.species.scientific_name}
-            commonName={post.species.common_names[0]}
-          />
-        ) : post.site_description ? (
-          <p className="text-sm text-gray-600 line-clamp-1">{post.site_description}</p>
-        ) : null}
+        <Link href={`/post/${post.id}`} className="block">
+          {post.species ? (
+            <SpeciesBadge
+              speciesId={post.species.id}
+              scientificName={post.species.scientific_name}
+              commonName={post.species.common_names[0]}
+            />
+          ) : post.site_description ? (
+            <p className="text-sm text-gray-600 line-clamp-1">{post.site_description}</p>
+          ) : null}
+        </Link>
         <div className="flex items-center justify-between">
           <Link
             href={`/profile/${post.profile.id}`}

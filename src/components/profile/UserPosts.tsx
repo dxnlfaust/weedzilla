@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { PostGrid } from "@/components/posts/PostGrid";
 import type { PostCardData } from "@/components/posts/PostCard";
 import { CompareSlider } from "@/components/posts/CompareSlider";
+import { thumbnail } from "@/lib/utils/image";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 
@@ -64,14 +65,14 @@ export function UserPosts({ posts: initialPosts, isOwner }: UserPostsProps) {
             <div className="relative">
               {post.post_type === "before_after" && post.image_url_after ? (
                 <CompareSlider
-                  beforeSrc={post.image_url}
-                  afterSrc={post.image_url_after}
+                  beforeSrc={thumbnail(post.image_url)}
+                  afterSrc={thumbnail(post.image_url_after)}
                   alt={post.species?.scientific_name || post.site_description || "Post"}
                   compact
                 />
               ) : (
                 <img
-                  src={post.image_url}
+                  src={thumbnail(post.image_url)}
                   alt={post.species?.scientific_name || post.site_description || "Post"}
                   className="w-full aspect-square object-cover"
                 />

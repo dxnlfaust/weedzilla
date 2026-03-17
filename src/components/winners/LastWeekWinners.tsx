@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Crown, Heart } from "lucide-react";
 import { CompareSlider } from "@/components/posts/CompareSlider";
+import { thumbnail } from "@/lib/utils/image";
 
 export interface LastWeekWinnerData {
   postId: string;
@@ -35,15 +36,15 @@ function WinnerSlot({ winner, categoryLabel }: { winner: LastWeekWinnerData; cat
     <div className="bg-white/10 hover:bg-white/20 rounded-lg overflow-hidden transition-colors duration-150">
       {isBA ? (
         <CompareSlider
-          beforeSrc={winner.imageUrl}
-          afterSrc={winner.imageUrlAfter!}
+          beforeSrc={thumbnail(winner.imageUrl)}
+          afterSrc={thumbnail(winner.imageUrlAfter)}
           alt={winner.speciesScientificName || winner.siteDescription || categoryLabel}
           compact
         />
       ) : (
         <Link href={`/post/${winner.postId}`}>
           <img
-            src={winner.imageUrl}
+            src={thumbnail(winner.imageUrl)}
             alt={winner.speciesScientificName || winner.siteDescription || categoryLabel}
             className="w-full aspect-square object-cover"
           />

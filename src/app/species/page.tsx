@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { SpeciesGrid } from "@/components/species/SpeciesGrid";
+
+export const metadata: Metadata = {
+  title: "Species",
+  description: "Browse weed species on WeedZilla",
+};
 
 export default async function SpeciesPage() {
   const supabase = await createClient();

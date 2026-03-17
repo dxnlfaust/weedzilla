@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { PostGrid } from "@/components/posts/PostGrid";
@@ -19,6 +20,26 @@ interface PostWithJoins {
 
 interface SpeciesDetailPageProps {
   params: Promise<{ speciesId: string }>;
+}
+
+export async function generateMetadata({ params }: SpeciesDetailPageProps): Promise<Metadata> {
+  const { speciesId } = await params;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("species")
+    .select("scientific_name, common_names")
+    .eq("id", Number(speciesId))
+    .single();
+
+  if (!data) return { title: "Species Not Found" };
+
+  const commonName = data.common_names?.[0];
+  const title = commonName ? `${data.scientific_name} (${commonName})` : data.scientific_name;
+
+  return {
+    title,
+    description: `Browse posts of ${data.scientific_name} removal on WeedZilla`,
+  };
 }
 
 export default async function SpeciesDetailPage({

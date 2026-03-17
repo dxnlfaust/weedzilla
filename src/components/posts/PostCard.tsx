@@ -3,6 +3,7 @@ import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { CompareSlider } from "./CompareSlider";
 import { formatRelativeTime } from "@/lib/utils/formatters";
+import { thumbnail } from "@/lib/utils/image";
 
 export interface PostCardData {
   id: string;
@@ -41,15 +42,15 @@ export function PostCard({ post }: PostCardProps) {
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {isBA ? (
         <CompareSlider
-          beforeSrc={post.image_url}
-          afterSrc={post.image_url_after!}
+          beforeSrc={thumbnail(post.image_url)}
+          afterSrc={thumbnail(post.image_url_after)}
           alt={altText}
           compact
         />
       ) : (
         <Link href={`/post/${post.id}`} className="block">
           <img
-            src={post.image_url}
+            src={thumbnail(post.image_url)}
             alt={altText}
             className="w-full aspect-square object-cover"
           />

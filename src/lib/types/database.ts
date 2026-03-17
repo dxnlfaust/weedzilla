@@ -20,6 +20,7 @@ export interface Database {
           ban_reason: string | null;
           created_at: string;
           updated_at: string;
+          last_notified_win_at: string | null;
         };
         Insert: {
           id: string;
@@ -31,6 +32,7 @@ export interface Database {
           ban_reason?: string | null;
           created_at?: string;
           updated_at?: string;
+          last_notified_win_at?: string | null;
         };
         Update: {
           id?: string;
@@ -42,6 +44,7 @@ export interface Database {
           ban_reason?: string | null;
           created_at?: string;
           updated_at?: string;
+          last_notified_win_at?: string | null;
         };
         Relationships: [];
       };
@@ -451,6 +454,19 @@ export interface Database {
           p_post_id: string;
         };
         Returns: undefined;
+      };
+      get_unseen_wins: {
+        Args: {
+          p_user_id: string;
+        };
+        Returns: {
+          id: number;
+          week_year: string;
+          post_type: string;
+          place: number;
+          vote_count: number;
+          created_at: string;
+        }[];
       };
       get_previous_week_year: {
         Args: Record<string, never>;

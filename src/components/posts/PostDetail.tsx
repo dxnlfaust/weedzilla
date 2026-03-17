@@ -2,10 +2,12 @@ import Link from "next/link";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { ReportButton } from "@/components/reports/ReportButton";
+import { ShareButton } from "@/components/posts/ShareButton";
 import { CommentSection } from "@/components/comments/CommentSection";
 import { CompareSlider } from "@/components/posts/CompareSlider";
 import type { CommentData } from "@/components/comments/CommentItem";
 import { formatRelativeTime } from "@/lib/utils/formatters";
+import { display, avatarSm } from "@/lib/utils/image";
 
 interface PostDetailProps {
   post: {
@@ -32,10 +34,13 @@ interface PostDetailProps {
     user_has_voted: boolean;
   };
   userId?: string | null;
+  postUrl?: string;
   comments?: CommentData[];
 }
 
-export function PostDetail({ post, userId, comments }: PostDetailProps) {
+export function PostDetail({ post, userId, postUrl, comments }: PostDetailProps) {
+  const shareTitle = post.species?.scientific_name || post.site_description || "Check out this post";
+  const shareUrl = postUrl || (typeof window !== "undefined" ? window.location.href : "");
   const isBA = post.post_type === "before_after";
 
   return (
@@ -43,13 +48,13 @@ export function PostDetail({ post, userId, comments }: PostDetailProps) {
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         {isBA && post.image_url_after ? (
           <CompareSlider
-            beforeSrc={post.image_url}
-            afterSrc={post.image_url_after}
+            beforeSrc={display(post.image_url)}
+            afterSrc={display(post.image_url_after)}
             alt={post.species?.scientific_name || post.site_description || "Before & After"}
           />
         ) : (
           <img
-            src={post.image_url}
+            src={display(post.image_url)}
             alt={
               post.species
                 ? `${post.species.scientific_name} removed by ${post.profile.display_name}`
@@ -88,7 +93,7 @@ export function PostDetail({ post, userId, comments }: PostDetailProps) {
               >
                 {post.profile.avatar_url ? (
                   <img
-                    src={post.profile.avatar_url}
+                    src={avatarSm(post.profile.avatar_url)}
                     alt={post.profile.display_name}
                     className="h-6 w-6 rounded-full object-cover"
                   />
@@ -104,6 +109,11 @@ export function PostDetail({ post, userId, comments }: PostDetailProps) {
               </span>
             </div>
             <div className="flex items-center gap-2">
+              <ShareButton
+                url={shareUrl}
+                title={shareTitle}
+                text={`${shareTitle} on WeedZilla`}
+              />
               {userId && userId !== post.profile.id && (
                 <ReportButton
                   targetType="post"

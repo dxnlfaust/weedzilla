@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Crown, Heart } from "lucide-react";
 import { CompareSlider } from "@/components/posts/CompareSlider";
+import { thumbnail } from "@/lib/utils/image";
 
 export interface WinnerCardProps {
   postId: string;
@@ -34,15 +35,15 @@ export function WinnerCard({ postId, imageUrl, imageUrlAfter, postType, speciesS
       <div className="relative">
         {isBA ? (
           <CompareSlider
-            beforeSrc={imageUrl}
-            afterSrc={imageUrlAfter!}
+            beforeSrc={thumbnail(imageUrl)}
+            afterSrc={thumbnail(imageUrlAfter)}
             alt={speciesScientificName || siteDescription || "Winner"}
             compact
           />
         ) : (
           <Link href={`/post/${postId}`}>
             <img
-              src={imageUrl}
+              src={thumbnail(imageUrl)}
               alt={speciesScientificName || siteDescription || "Winner"}
               className={`w-full object-cover ${isGold ? "aspect-[4/3]" : "aspect-square"}`}
             />

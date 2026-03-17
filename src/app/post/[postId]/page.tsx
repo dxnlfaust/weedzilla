@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { PostDetail } from "@/components/posts/PostDetail";
+import { display } from "@/lib/utils/image";
 
 interface PostWithJoins {
   id: string;
@@ -23,6 +25,40 @@ interface PostWithJoins {
 
 interface PostPageProps {
   params: Promise<{ postId: string }>;
+}
+
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  const { postId } = await params;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("posts")
+    .select("image_url, caption, site_description, species:species_id (scientific_name, common_names)")
+    .eq("id", postId)
+    .single();
+
+  const post = data as unknown as {
+    image_url: string;
+    caption: string | null;
+    site_description: string | null;
+    species: { scientific_name: string; common_names: string[] } | null;
+  } | null;
+
+  if (!post) return { title: "Post Not Found" };
+
+  const title = post.species?.scientific_name || post.site_description || "Post";
+  const description = post.caption || `${title} on WeedZilla`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | WeedZilla`,
+      description,
+      images: [{ url: display(post.image_url), width: 1200 }],
+      type: "article",
+    },
+    twitter: { card: "summary_large_image" },
+  };
 }
 
 export default async function PostPage({ params }: PostPageProps) {
@@ -86,10 +122,13 @@ export default async function PostPage({ params }: PostPageProps) {
       : false,
   };
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://weedzilla.app";
+
   return (
     <PostDetail
       post={transformedPost}
       userId={user?.id ?? null}
+      postUrl={`${siteUrl}/post/${postId}`}
       comments={comments}
     />
   );

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { CrownBadge } from "@/components/profile/CrownBadge";
 import { UploadPopover } from "./UploadPopover";
-import { Trophy, Leaf, Home, Upload, LogOut, User, LogIn, UserPlus, Info } from "lucide-react";
+import { Trophy, Leaf, Home, Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3 } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { avatarSm } from "@/lib/utils/image";
 
 export function Navbar() {
   const { user, crownCount, avatarUrl, displayName, loading, signOut } = useAuth();
@@ -70,7 +71,7 @@ export function Navbar() {
                   <MenuButton className="outline-none">
                     {avatarUrl ? (
                       <img
-                        src={avatarUrl}
+                        src={avatarSm(avatarUrl)}
                         alt={displayName || "Profile"}
                         className="h-8 w-8 rounded-full object-cover border-2 border-eucalypt-dark/20 hover:border-eucalypt-dark/50 transition-colors"
                       />
@@ -97,6 +98,15 @@ export function Navbar() {
                         >
                           <User className="h-4 w-4 text-gray-400" />
                           Profile
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          href="/leaderboard"
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                        >
+                          <BarChart3 className="h-4 w-4 text-gray-400" />
+                          Leaderboard
                         </Link>
                       </MenuItem>
                       <MenuItem>

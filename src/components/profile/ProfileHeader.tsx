@@ -1,5 +1,6 @@
 import { CrownBadge } from "./CrownBadge";
 import { formatRelativeTime } from "@/lib/utils/formatters";
+import { avatarMd } from "@/lib/utils/image";
 import { Crown } from "lucide-react";
 
 interface ProfileHeaderProps {
@@ -25,7 +26,7 @@ export function ProfileHeader({
     <div className="flex items-center gap-4">
       {avatarUrl ? (
         <img
-          src={avatarUrl}
+          src={avatarMd(avatarUrl)}
           alt={displayName}
           className="h-16 w-16 rounded-full object-cover"
         />

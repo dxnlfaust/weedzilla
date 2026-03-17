@@ -28,6 +28,12 @@ export function formatRelativeTime(date: string | Date): string {
   });
 }
 
+export function formatWeekLabel(weekYear: string): string {
+  const match = weekYear.match(/^(\d{4})-W(\d{2})$/);
+  if (!match) return weekYear;
+  return `Week ${parseInt(match[2], 10)}, ${match[1]}`;
+}
+
 export function formatVoteCount(count: number): string {
   if (count < 1000) return count.toString();
   return `${(count / 1000).toFixed(1)}k`;

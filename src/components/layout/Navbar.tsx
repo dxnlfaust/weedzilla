@@ -12,11 +12,11 @@ export function Navbar() {
   const { user, crownCount, avatarUrl, displayName, loading, signOut } = useAuth();
 
   return (
-    <nav className="bg-eucalypt-dark text-white">
+    <nav className="bg-white text-eucalypt-dark border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold tracking-tight">
+          <Link href="/" className="text-xl font-bold tracking-tight text-eucalypt-dark">
             WeedZilla
           </Link>
 
@@ -24,21 +24,21 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               href="/"
-              className="text-sm font-medium hover:text-white/80 transition-colors duration-150 flex items-center gap-1"
+              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
             >
               <Home className="h-4 w-4" />
               Home
             </Link>
             <Link
               href="/species"
-              className="text-sm font-medium hover:text-white/80 transition-colors duration-150 flex items-center gap-1"
+              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
             >
               <Leaf className="h-4 w-4" />
               Species
             </Link>
             <Link
               href="/winners"
-              className="text-sm font-medium hover:text-white/80 transition-colors duration-150 flex items-center gap-1"
+              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
             >
               <Trophy className="h-4 w-4" />
               Winners
@@ -47,7 +47,7 @@ export function Navbar() {
               isLoggedIn={!!user}
               position="below"
               trigger={
-                <span className="text-sm font-medium hover:text-white/80 transition-colors duration-150 flex items-center gap-1 text-white">
+                <span className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1">
                   <Upload className="h-4 w-4" />
                   Upload
                 </span>
@@ -58,7 +58,7 @@ export function Navbar() {
           {/* Desktop + Mobile: avatar dropdown (right side) */}
           <div className="flex items-center gap-3">
             {loading ? (
-              <div className="h-8 w-8 bg-white/10 rounded-full animate-pulse" />
+              <div className="h-8 w-8 bg-eucalypt-dark/10 rounded-full animate-pulse" />
             ) : user ? (
               <div className="flex items-center gap-2">
                 {crownCount > 0 && (
@@ -72,10 +72,10 @@ export function Navbar() {
                       <img
                         src={avatarUrl}
                         alt={displayName || "Profile"}
-                        className="h-8 w-8 rounded-full object-cover border-2 border-white/30 hover:border-white/60 transition-colors"
+                        className="h-8 w-8 rounded-full object-cover border-2 border-eucalypt-dark/20 hover:border-eucalypt-dark/50 transition-colors"
                       />
                     ) : (
-                      <div className="h-8 w-8 rounded-full bg-eucalypt flex items-center justify-center text-sm font-bold text-white border-2 border-white/30 hover:border-white/60 transition-colors">
+                      <div className="h-8 w-8 rounded-full bg-eucalypt-dark flex items-center justify-center text-sm font-bold text-white border-2 border-eucalypt-dark/20 hover:border-eucalypt-dark/50 transition-colors">
                         {displayName?.[0]?.toUpperCase() || "?"}
                       </div>
                     )}
@@ -127,21 +127,21 @@ export function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="hidden md:flex items-center gap-1 text-sm font-medium hover:text-white/80 transition-colors duration-150"
+                  className="hidden md:flex items-center gap-1 text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150"
                 >
                   <LogIn className="h-4 w-4" />
                   Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="hidden md:inline-block bg-eucalypt text-white hover:bg-eucalypt-light rounded-lg px-4 py-1.5 text-sm font-medium transition-colors duration-150"
+                  className="hidden md:inline-block bg-eucalypt-dark text-white hover:bg-eucalypt rounded-lg px-4 py-1.5 text-sm font-medium transition-colors duration-150"
                 >
                   Sign Up
                 </Link>
                 {/* Mobile: just show login icon */}
                 <Link
                   href="/login"
-                  className="md:hidden flex items-center gap-1 text-sm"
+                  className="md:hidden flex items-center gap-1 text-sm text-eucalypt-dark"
                   aria-label="Log in"
                 >
                   <UserPlus className="h-5 w-5" />

@@ -31,7 +31,7 @@ export function BottomNav() {
                 isLoggedIn={!!user}
                 position="above"
                 trigger={
-                  <div className="flex flex-col items-center gap-0.5 text-white/60">
+                  <div className="flex flex-col items-center gap-0.5 text-nav-inactive">
                     <Plus className="h-6 w-6" />
                     <span className="text-[10px]">Upload</span>
                   </div>
@@ -50,7 +50,7 @@ export function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 transition-colors ${
-                isActive ? "text-white" : "text-white/60"
+                isActive ? "text-white" : "text-nav-inactive"
               }`}
             >
               <tab.icon className="h-6 w-6" />

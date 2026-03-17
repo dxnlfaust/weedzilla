@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { Crown, Heart } from "lucide-react";
+import { CompareSlider } from "@/components/posts/CompareSlider";
 
 export interface LastWeekWinnerData {
   postId: string;
   imageUrl: string;
+  imageUrlAfter: string | null;
   postType: "weed" | "before_after";
   speciesScientificName: string | null;
   speciesCommonName: string | null;
@@ -25,17 +29,27 @@ function formatWeekLabel(weekYear: string): string {
 }
 
 function WinnerSlot({ winner, categoryLabel }: { winner: LastWeekWinnerData; categoryLabel: string }) {
+  const isBA = winner.postType === "before_after" && winner.imageUrlAfter;
+
   return (
-    <Link
-      href={`/post/${winner.postId}`}
-      className="group bg-white/10 hover:bg-white/20 rounded-lg overflow-hidden transition-colors duration-150"
-    >
-      <img
-        src={winner.imageUrl}
-        alt={winner.speciesScientificName || winner.siteDescription || categoryLabel}
-        className="w-full aspect-[4/3] object-cover"
-      />
-      <div className="p-3">
+    <div className="bg-white/10 hover:bg-white/20 rounded-lg overflow-hidden transition-colors duration-150">
+      {isBA ? (
+        <CompareSlider
+          beforeSrc={winner.imageUrl}
+          afterSrc={winner.imageUrlAfter!}
+          alt={winner.speciesScientificName || winner.siteDescription || categoryLabel}
+          compact
+        />
+      ) : (
+        <Link href={`/post/${winner.postId}`}>
+          <img
+            src={winner.imageUrl}
+            alt={winner.speciesScientificName || winner.siteDescription || categoryLabel}
+            className="w-full aspect-square object-cover"
+          />
+        </Link>
+      )}
+      <Link href={`/post/${winner.postId}`} className="block p-3">
         <div className="flex items-center gap-1.5 mb-1.5">
           <Crown className="h-4 w-4 text-gold" />
           <span className="text-white/70 text-xs font-medium">{categoryLabel}</span>
@@ -67,8 +81,8 @@ function WinnerSlot({ winner, categoryLabel }: { winner: LastWeekWinnerData; cat
             <span className="text-white/60 text-xs">{winner.voteCount}</span>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

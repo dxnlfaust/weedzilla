@@ -101,10 +101,8 @@ export default async function HomePage() {
     .filter((w) => w.post != null && w.profile != null)
     .map((w) => ({
       postId: w.post_id,
-      imageUrl:
-        w.post!.post_type === "before_after" && w.post!.image_url_after
-          ? w.post!.image_url_after
-          : w.post!.thumbnail_url || w.post!.image_url,
+      imageUrl: w.post!.thumbnail_url || w.post!.image_url,
+      imageUrlAfter: w.post!.image_url_after ?? null,
       postType: w.post_type as "weed" | "before_after",
       speciesScientificName: w.post!.species?.scientific_name ?? null,
       speciesCommonName: w.post!.species?.common_names?.[0] ?? null,

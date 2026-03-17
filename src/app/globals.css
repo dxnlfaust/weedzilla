@@ -9,9 +9,10 @@
   --color-gold: #F59E0B;
   --color-silver: #9CA3AF;
   --color-bronze: #CD7F32;
+  --color-nav-inactive: #A4B4AD;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
 body {
-  @apply bg-gray-100 text-carbon antialiased;
+  @apply bg-white text-carbon antialiased;
 }

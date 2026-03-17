@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { PostGrid } from "@/components/posts/PostGrid";
 import type { PostCardData } from "@/components/posts/PostCard";
+import { CompareSlider } from "@/components/posts/CompareSlider";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 
@@ -61,15 +62,19 @@ export function UserPosts({ posts: initialPosts, isOwner }: UserPostsProps) {
         <div key={post.id} className="relative group">
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div className="relative">
-              <img
-                src={post.post_type === "before_after" && post.image_url_after ? post.image_url_after : post.image_url}
-                alt={post.species?.scientific_name || post.site_description || "Post"}
-                className="w-full aspect-square object-cover"
-              />
-              {post.post_type === "before_after" && (
-                <span className="absolute top-2 left-2 bg-teal-600/80 text-white text-xs font-medium px-1.5 py-0.5 rounded">
-                  B&A
-                </span>
+              {post.post_type === "before_after" && post.image_url_after ? (
+                <CompareSlider
+                  beforeSrc={post.image_url}
+                  afterSrc={post.image_url_after}
+                  alt={post.species?.scientific_name || post.site_description || "Post"}
+                  compact
+                />
+              ) : (
+                <img
+                  src={post.image_url}
+                  alt={post.species?.scientific_name || post.site_description || "Post"}
+                  className="w-full aspect-square object-cover"
+                />
               )}
             </div>
             <div className="p-3">

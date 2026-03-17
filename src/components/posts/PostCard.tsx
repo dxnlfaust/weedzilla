@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
+import { CompareSlider } from "./CompareSlider";
 import { formatRelativeTime } from "@/lib/utils/formatters";
 
 export interface PostCardData {
@@ -31,26 +32,31 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const isBA = post.post_type === "before_after";
-  const thumbnailUrl = isBA && post.image_url_after ? post.image_url_after : post.image_url;
+  const isBA = post.post_type === "before_after" && post.image_url_after;
   const altText = post.species
     ? `${post.species.scientific_name} by ${post.profile.display_name}`
     : `Site by ${post.profile.display_name}`;
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-      <Link href={`/post/${post.id}`} className="relative block">
-        <img
-          src={thumbnailUrl}
-          alt={altText}
-          className="w-full aspect-square object-cover"
-        />
-        {isBA && (
-          <span className="absolute top-2 left-2 bg-teal-600/80 text-white text-xs font-medium px-1.5 py-0.5 rounded">
-            B&A
-          </span>
-        )}
-      </Link>
+      {isBA ? (
+        <Link href={`/post/${post.id}`} className="block">
+          <CompareSlider
+            beforeSrc={post.image_url}
+            afterSrc={post.image_url_after!}
+            alt={altText}
+            compact
+          />
+        </Link>
+      ) : (
+        <Link href={`/post/${post.id}`} className="block">
+          <img
+            src={post.image_url}
+            alt={altText}
+            className="w-full aspect-square object-cover"
+          />
+        </Link>
+      )}
       <div className="p-3 space-y-2">
         {post.species ? (
           <SpeciesBadge

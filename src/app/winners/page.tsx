@@ -128,9 +128,6 @@ export default function WinnersPage() {
           <Crown className="h-6 w-6 text-gold" />
           <h1 className="text-2xl font-bold text-carbon">Winners</h1>
         </div>
-        <p className="text-gray-500 text-sm">
-          Top 3 posts each week — gold, silver, and bronze.
-        </p>
       </div>
 
       {/* Category toggle */}

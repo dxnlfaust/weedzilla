@@ -117,14 +117,6 @@ export default async function HomePage() {
   return (
     <div>
       <LastWeekWinners weedWinner={weedWinner} baWinner={baWinner} weekYear={prevWeek || ""} />
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-carbon mb-1">
-          This Week&apos;s Posts
-        </h1>
-        <p className="text-gray-500">
-          Vote for the best weed removal and before &amp; after of the week!
-        </p>
-      </div>
       <HomeFeed
         initialPosts={transformedPosts}
         currentWeek={currentWeek || ""}

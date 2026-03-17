@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
+import { ProgressBar } from "@/components/layout/ProgressBar";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,11 +30,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Navbar />
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 pb-20 md:pb-6">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-20 pb-20 md:pb-6">
           {children}
         </main>
         <Footer />
         <BottomNav />
+        <ProgressBar />
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

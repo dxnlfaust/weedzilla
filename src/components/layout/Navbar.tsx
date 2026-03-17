@@ -12,7 +12,7 @@ export function Navbar() {
   const { user, crownCount, avatarUrl, displayName, loading, signOut } = useAuth();
 
   return (
-    <nav className="bg-white text-eucalypt-dark border-b border-gray-200">
+    <nav className="fixed top-0 inset-x-0 bg-white text-eucalypt-dark z-40">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}

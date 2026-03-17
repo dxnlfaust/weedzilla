@@ -119,11 +119,15 @@ export interface Database {
         Row: {
           id: string;
           user_id: string;
-          species_id: number;
+          species_id: number | null;
           image_url: string;
           thumbnail_url: string | null;
+          image_url_after: string | null;
           caption: string | null;
+          site_description: string | null;
+          post_type: "weed" | "before_after";
           week_year: string;
+          view_count: number;
           report_count: number;
           is_hidden: boolean;
           is_removed: boolean;
@@ -132,11 +136,15 @@ export interface Database {
         Insert: {
           id?: string;
           user_id: string;
-          species_id: number;
+          species_id?: number | null;
           image_url: string;
           thumbnail_url?: string | null;
+          image_url_after?: string | null;
           caption?: string | null;
+          site_description?: string | null;
+          post_type?: "weed" | "before_after";
           week_year: string;
+          view_count?: number;
           report_count?: number;
           is_hidden?: boolean;
           is_removed?: boolean;
@@ -145,11 +153,15 @@ export interface Database {
         Update: {
           id?: string;
           user_id?: string;
-          species_id?: number;
+          species_id?: number | null;
           image_url?: string;
           thumbnail_url?: string | null;
+          image_url_after?: string | null;
           caption?: string | null;
+          site_description?: string | null;
+          post_type?: "weed" | "before_after";
           week_year?: string;
+          view_count?: number;
           report_count?: number;
           is_hidden?: boolean;
           is_removed?: boolean;
@@ -178,7 +190,6 @@ export interface Database {
           user_id: string;
           post_id: string;
           week_year: string;
-          species_id: number;
           created_at: string;
         };
         Insert: {
@@ -186,7 +197,6 @@ export interface Database {
           user_id: string;
           post_id: string;
           week_year: string;
-          species_id: number;
           created_at?: string;
         };
         Update: {
@@ -194,7 +204,6 @@ export interface Database {
           user_id?: string;
           post_id?: string;
           week_year?: string;
-          species_id?: number;
           created_at?: string;
         };
         Relationships: [
@@ -210,13 +219,6 @@ export interface Database {
             columns: ["post_id"];
             isOneToOne: false;
             referencedRelation: "posts";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "votes_species_id_fkey";
-            columns: ["species_id"];
-            isOneToOne: false;
-            referencedRelation: "species";
             referencedColumns: ["id"];
           },
         ];
@@ -373,7 +375,8 @@ export interface Database {
         Row: {
           id: number;
           week_year: string;
-          species_id: number;
+          post_type: "weed" | "before_after";
+          place: number;
           post_id: string;
           user_id: string;
           vote_count: number;
@@ -382,7 +385,8 @@ export interface Database {
         Insert: {
           id?: number;
           week_year: string;
-          species_id: number;
+          post_type: "weed" | "before_after";
+          place: number;
           post_id: string;
           user_id: string;
           vote_count?: number;
@@ -391,20 +395,14 @@ export interface Database {
         Update: {
           id?: number;
           week_year?: string;
-          species_id?: number;
+          post_type?: "weed" | "before_after";
+          place?: number;
           post_id?: string;
           user_id?: string;
           vote_count?: number;
           created_at?: string;
         };
         Relationships: [
-          {
-            foreignKeyName: "weekly_winners_species_id_fkey";
-            columns: ["species_id"];
-            isOneToOne: false;
-            referencedRelation: "species";
-            referencedColumns: ["id"];
-          },
           {
             foreignKeyName: "weekly_winners_post_id_fkey";
             columns: ["post_id"];
@@ -448,12 +446,9 @@ export interface Database {
         };
         Returns: number;
       };
-      swap_vote: {
+      increment_view_count: {
         Args: {
-          p_user_id: string;
-          p_new_post_id: string;
-          p_species_id: number;
-          p_week_year: string;
+          p_post_id: string;
         };
         Returns: undefined;
       };

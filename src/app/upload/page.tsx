@@ -2,7 +2,14 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { UploadForm } from "@/components/posts/UploadForm";
 
-export default async function UploadPage() {
+interface UploadPageProps {
+  searchParams: Promise<{ type?: string }>;
+}
+
+export default async function UploadPage({ searchParams }: UploadPageProps) {
+  const { type } = await searchParams;
+  const postType = type === "before_after" ? "before_after" : "weed";
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -12,9 +19,15 @@ export default async function UploadPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold text-carbon mb-6">Upload a Weed</h1>
+      <h1 className="text-2xl font-bold text-carbon mb-6">
+        {postType === "before_after" ? "Upload Before & After" : "Upload a Weed"}
+      </h1>
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <UploadForm userId={user.id} accountCreatedAt={user.created_at} />
+        <UploadForm
+          userId={user.id}
+          accountCreatedAt={user.created_at}
+          postType={postType}
+        />
       </div>
     </div>
   );

@@ -7,22 +7,26 @@ import type { User } from "@supabase/supabase-js";
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [crownCount, setCrownCount] = useState(0);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
-  async function fetchCrownCount(userId: string) {
+  async function fetchProfile(userId: string) {
     const { data } = await supabase
       .from("profiles")
-      .select("crown_count")
+      .select("crown_count, avatar_url, display_name")
       .eq("id", userId)
       .single();
     setCrownCount(data?.crown_count ?? 0);
+    setAvatarUrl(data?.avatar_url ?? null);
+    setDisplayName(data?.display_name ?? null);
   }
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) fetchCrownCount(user.id);
+      if (user) fetchProfile(user.id);
       setLoading(false);
     });
 
@@ -32,9 +36,11 @@ export function useAuth() {
       const u = session?.user ?? null;
       setUser(u);
       if (u) {
-        fetchCrownCount(u.id);
+        fetchProfile(u.id);
       } else {
         setCrownCount(0);
+        setAvatarUrl(null);
+        setDisplayName(null);
       }
       setLoading(false);
     });
@@ -46,5 +52,5 @@ export function useAuth() {
     await supabase.auth.signOut();
   };
 
-  return { user, crownCount, loading, signOut };
+  return { user, crownCount, avatarUrl, displayName, loading, signOut };
 }

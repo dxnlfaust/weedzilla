@@ -26,6 +26,20 @@ export default async function PublicProfilePage({
   const profile = profileData as Profile | null;
   if (!profile) notFound();
 
+  // Medal counts
+  const [{ count: silverCount }, { count: bronzeCount }] = await Promise.all([
+    supabase
+      .from("weekly_winners")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("place", 2),
+    supabase
+      .from("weekly_winners")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("place", 3),
+  ]);
+
   const { data: postsData } = await supabase
     .from("posts")
     .select(
@@ -43,17 +57,23 @@ export default async function PublicProfilePage({
   const posts = (postsData || []) as unknown as {
     id: string;
     image_url: string;
+    image_url_after: string | null;
     caption: string | null;
+    site_description: string | null;
+    post_type: "weed" | "before_after";
     week_year: string;
     created_at: string;
-    species: { id: number; scientific_name: string; common_names: string[] };
+    species: { id: number; scientific_name: string; common_names: string[] } | null;
     votes: { id: string; user_id: string }[];
   }[];
 
-  const transformedPosts = posts.filter((post) => post.species != null).map((post) => ({
+  const transformedPosts = posts.map((post) => ({
     id: post.id,
     image_url: post.image_url,
+    image_url_after: post.image_url_after,
     caption: post.caption,
+    site_description: post.site_description,
+    post_type: post.post_type,
     week_year: post.week_year,
     created_at: post.created_at,
     species: post.species,
@@ -74,6 +94,8 @@ export default async function PublicProfilePage({
         displayName={profile.display_name}
         avatarUrl={profile.avatar_url}
         crownCount={profile.crown_count}
+        silverCount={silverCount || 0}
+        bronzeCount={bronzeCount || 0}
         createdAt={profile.created_at}
       />
 

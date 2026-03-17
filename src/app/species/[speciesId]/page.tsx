@@ -6,10 +6,13 @@ import type { Species } from "@/lib/types/database";
 interface PostWithJoins {
   id: string;
   image_url: string;
+  image_url_after: string | null;
   caption: string | null;
+  site_description: string | null;
+  post_type: "weed" | "before_after";
   week_year: string;
   created_at: string;
-  species: { id: number; scientific_name: string; common_names: string[] };
+  species: { id: number; scientific_name: string; common_names: string[] } | null;
   profile: { id: string; display_name: string; avatar_url: string | null };
   votes: { id: string; user_id: string }[];
 }
@@ -56,19 +59,24 @@ export default async function SpeciesDetailPage({
 
   const posts = (data || []) as unknown as PostWithJoins[];
 
-  const transformedPosts = posts.filter((post) => post.species != null && post.profile != null).map((post) => ({
-    id: post.id,
-    image_url: post.image_url,
-    caption: post.caption,
-    week_year: post.week_year,
-    created_at: post.created_at,
-    species: post.species,
-    profile: post.profile,
-    vote_count: post.votes?.length || 0,
-    user_has_voted: user
-      ? post.votes?.some((v) => v.user_id === user.id) || false
-      : false,
-  }));
+  const transformedPosts = posts
+    .filter((post) => post.profile != null)
+    .map((post) => ({
+      id: post.id,
+      image_url: post.image_url,
+      image_url_after: post.image_url_after,
+      caption: post.caption,
+      site_description: post.site_description,
+      post_type: post.post_type,
+      week_year: post.week_year,
+      created_at: post.created_at,
+      species: post.species,
+      profile: post.profile,
+      vote_count: post.votes?.length || 0,
+      user_has_voted: user
+        ? post.votes?.some((v) => v.user_id === user.id) || false
+        : false,
+    }));
 
   return (
     <div>

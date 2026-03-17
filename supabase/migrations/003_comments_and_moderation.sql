@@ -25,9 +25,14 @@ CREATE POLICY "Non-hidden comments viewable by everyone"
   ON public.comments FOR SELECT
   USING (is_hidden = FALSE);
 
-CREATE POLICY "Authenticated users can comment"
+CREATE POLICY "Authenticated non-banned users can comment"
   ON public.comments FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (
+    auth.uid() = user_id
+    AND NOT EXISTS (
+      SELECT 1 FROM public.profiles WHERE id = auth.uid() AND is_banned = TRUE
+    )
+  );
 
 CREATE POLICY "Users can delete own comments"
   ON public.comments FOR DELETE
@@ -50,9 +55,14 @@ CREATE TABLE public.comment_reports (
 
 ALTER TABLE public.comment_reports ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can report comments"
+CREATE POLICY "Non-banned users can report comments"
   ON public.comment_reports FOR INSERT
-  WITH CHECK (auth.uid() = reporter_id);
+  WITH CHECK (
+    auth.uid() = reporter_id
+    AND NOT EXISTS (
+      SELECT 1 FROM public.profiles WHERE id = auth.uid() AND is_banned = TRUE
+    )
+  );
 
 CREATE POLICY "Admins can view comment reports"
   ON public.comment_reports FOR SELECT

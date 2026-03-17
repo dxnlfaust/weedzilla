@@ -292,9 +292,14 @@ CREATE POLICY "Users can remove own votes"
   USING (auth.uid() = user_id);
 
 -- REPORTS
-CREATE POLICY "Users can create reports"
+CREATE POLICY "Non-banned users can create reports"
   ON public.reports FOR INSERT
-  WITH CHECK (auth.uid() = reporter_id);
+  WITH CHECK (
+    auth.uid() = reporter_id
+    AND NOT EXISTS (
+      SELECT 1 FROM public.profiles WHERE id = auth.uid() AND is_banned = TRUE
+    )
+  );
 
 CREATE POLICY "Admins can view reports"
   ON public.reports FOR SELECT

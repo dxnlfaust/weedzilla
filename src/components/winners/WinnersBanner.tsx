@@ -4,7 +4,7 @@ import { Heart, Crown } from "lucide-react";
 export interface WinnerCardData {
   postId: string;
   imageUrl: string;
-  speciesScientificName: string;
+  speciesScientificName: string | null;
   speciesCommonName: string | null;
   displayName: string;
   voteCount: number;
@@ -49,16 +49,24 @@ export function WinnersBanner({ winners, weekYear }: WinnersBannerProps) {
             <div className="rounded-lg overflow-hidden bg-white/10 hover:bg-white/20 transition-colors duration-150">
               <img
                 src={winner.imageUrl}
-                alt={winner.speciesScientificName}
+                alt={winner.speciesScientificName || "Winner"}
                 className="w-full aspect-square object-cover"
               />
               <div className="p-2">
-                <p className="text-white text-xs italic font-medium leading-tight line-clamp-1">
-                  {winner.speciesScientificName}
-                </p>
-                {winner.speciesCommonName && (
-                  <p className="text-eucalypt-light text-xs leading-tight line-clamp-1">
-                    {winner.speciesCommonName}
+                {winner.speciesScientificName ? (
+                  <>
+                    <p className="text-white text-xs italic font-medium leading-tight line-clamp-1">
+                      {winner.speciesScientificName}
+                    </p>
+                    {winner.speciesCommonName && (
+                      <p className="text-eucalypt-light text-xs leading-tight line-clamp-1">
+                        {winner.speciesCommonName}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-white text-xs font-medium leading-tight line-clamp-1">
+                    Before &amp; After
                   </p>
                 )}
                 <p className="text-white/70 text-xs mt-1 leading-tight line-clamp-1">

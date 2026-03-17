@@ -60,14 +60,21 @@ export function UserPosts({ posts: initialPosts, isOwner }: UserPostsProps) {
       {posts.map((post) => (
         <div key={post.id} className="relative group">
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <img
-              src={post.image_url}
-              alt={`${post.species.scientific_name}`}
-              className="w-full aspect-square object-cover"
-            />
+            <div className="relative">
+              <img
+                src={post.post_type === "before_after" && post.image_url_after ? post.image_url_after : post.image_url}
+                alt={post.species?.scientific_name || post.site_description || "Post"}
+                className="w-full aspect-square object-cover"
+              />
+              {post.post_type === "before_after" && (
+                <span className="absolute top-2 left-2 bg-teal-600/80 text-white text-xs font-medium px-1.5 py-0.5 rounded">
+                  B&A
+                </span>
+              )}
+            </div>
             <div className="p-3">
               <p className="italic text-sm text-eucalypt font-medium">
-                {post.species.scientific_name}
+                {post.species?.scientific_name || post.site_description || "Before & After"}
               </p>
               <p className="text-xs text-gray-400 mt-1">
                 {post.vote_count} vote{post.vote_count !== 1 ? "s" : ""}

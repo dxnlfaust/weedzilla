@@ -3,6 +3,7 @@ import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { ReportButton } from "@/components/reports/ReportButton";
 import { CommentSection } from "@/components/comments/CommentSection";
+import { CompareSlider } from "@/components/posts/CompareSlider";
 import type { CommentData } from "@/components/comments/CommentItem";
 import { formatRelativeTime } from "@/lib/utils/formatters";
 
@@ -10,7 +11,10 @@ interface PostDetailProps {
   post: {
     id: string;
     image_url: string;
+    image_url_after?: string | null;
     caption: string | null;
+    site_description?: string | null;
+    post_type: "weed" | "before_after";
     week_year: string;
     created_at: string;
     species: {
@@ -18,7 +22,7 @@ interface PostDetailProps {
       scientific_name: string;
       common_names: string[];
       family: string | null;
-    };
+    } | null;
     profile: {
       id: string;
       display_name: string;
@@ -32,22 +36,42 @@ interface PostDetailProps {
 }
 
 export function PostDetail({ post, userId, comments }: PostDetailProps) {
+  const isBA = post.post_type === "before_after";
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <img
-          src={post.image_url}
-          alt={`${post.species.scientific_name} removed by ${post.profile.display_name}`}
-          className="w-full object-contain max-h-[600px]"
-        />
+        {isBA && post.image_url_after ? (
+          <CompareSlider
+            beforeSrc={post.image_url}
+            afterSrc={post.image_url_after}
+            alt={post.species?.scientific_name || post.site_description || "Before & After"}
+          />
+        ) : (
+          <img
+            src={post.image_url}
+            alt={
+              post.species
+                ? `${post.species.scientific_name} removed by ${post.profile.display_name}`
+                : `Post by ${post.profile.display_name}`
+            }
+            className="w-full object-contain max-h-[600px]"
+          />
+        )}
         <div className="p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <SpeciesBadge
-              speciesId={post.species.id}
-              scientificName={post.species.scientific_name}
-              commonName={post.species.common_names[0]}
-            />
-            {post.species.family && (
+            {post.species ? (
+              <SpeciesBadge
+                speciesId={post.species.id}
+                scientificName={post.species.scientific_name}
+                commonName={post.species.common_names[0]}
+              />
+            ) : post.site_description ? (
+              <p className="text-sm font-medium text-gray-600">{post.site_description}</p>
+            ) : (
+              <span />
+            )}
+            {post.species?.family && (
               <span className="text-xs text-gray-400">{post.species.family}</span>
             )}
           </div>
@@ -89,7 +113,6 @@ export function PostDetail({ post, userId, comments }: PostDetailProps) {
               )}
               <VoteButton
                 postId={post.id}
-                speciesId={post.species.id}
                 weekYear={post.week_year}
                 initialHasVoted={post.user_has_voted}
                 initialVoteCount={post.vote_count}

@@ -1,8 +1,15 @@
 /**
- * Supabase Storage image optimization via render transforms.
- * Falls back to original URL if the URL is not a Supabase storage URL.
- * Requires Supabase Pro plan for transforms to work — original URL is safe fallback.
+ * Image URL helpers.
+ *
+ * Supabase Storage transforms require the Pro plan ($25/mo).
+ * For now these are pass-through — when you upgrade, flip
+ * ENABLE_TRANSFORMS to true and the resize URLs will kick in.
  */
+
+const ENABLE_TRANSFORMS = false;
+
+const SUPABASE_STORAGE_PATH = "/storage/v1/object/public/";
+const SUPABASE_RENDER_PATH = "/storage/v1/render/image/public/";
 
 interface ImageTransformOptions {
   width?: number;
@@ -10,14 +17,12 @@ interface ImageTransformOptions {
   quality?: number;
 }
 
-const SUPABASE_STORAGE_PATH = "/storage/v1/object/public/";
-const SUPABASE_RENDER_PATH = "/storage/v1/render/image/public/";
-
 export function getOptimizedUrl(
   url: string | null | undefined,
   options: ImageTransformOptions
 ): string {
   if (!url) return "";
+  if (!ENABLE_TRANSFORMS) return url;
   if (!url.includes(SUPABASE_STORAGE_PATH)) return url;
 
   const transformed = url.replace(SUPABASE_STORAGE_PATH, SUPABASE_RENDER_PATH);
@@ -29,7 +34,7 @@ export function getOptimizedUrl(
   return `${transformed}?${params.toString()}`;
 }
 
-// Presets
+// Presets — currently pass-through, will resize when ENABLE_TRANSFORMS = true
 export const thumbnail = (url: string | null | undefined) =>
   getOptimizedUrl(url, { width: 400 });
 

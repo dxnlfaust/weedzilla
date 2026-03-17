@@ -1,11 +1,11 @@
 export default function AboutPage() {
   return (
     <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-2xl font-bold text-carbon mb-4">About WeedZilla</h1>
+      <h1 className="text-2xl font-bold text-carbon mb-4">About</h1>
       <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
         <p className="text-gray-600">
           WeedZilla is a community platform for Australian bush regenerators to
-          share their weed removal wins. Upload photos of weeds you&apos;ve
+          share big weeds and bigger removals. Upload photos of weeds you&apos;ve
           removed or share before &amp; after transformations of sites
           you&apos;ve restored.
         </p>
@@ -22,6 +22,9 @@ export default function AboutPage() {
           >
             support@weedzilla.app
           </a>
+        </p>
+        <p className="text-sm text-gray-400">
+          Developed by <a href="https://faust.earth" className="text-eucalypt hover:underline">faust.earth</a>.
         </p>
       </div>
     </div>

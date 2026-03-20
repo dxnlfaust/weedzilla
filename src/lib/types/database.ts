@@ -422,6 +422,61 @@ export interface Database {
           },
         ];
       };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: "comment" | "win";
+          post_id: string | null;
+          actor_id: string | null;
+          message: string;
+          is_read: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: "comment" | "win";
+          post_id?: string | null;
+          actor_id?: string | null;
+          message: string;
+          is_read?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: "comment" | "win";
+          post_id?: string | null;
+          actor_id?: string | null;
+          message?: string;
+          is_read?: boolean;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notifications_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notifications_actor_id_fkey";
+            columns: ["actor_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -476,6 +531,14 @@ export interface Database {
         Args: { p_week_year: string };
         Returns: number;
       };
+      get_unread_notification_count: {
+        Args: { p_user_id: string };
+        Returns: number;
+      };
+      mark_notifications_read: {
+        Args: { p_user_id: string };
+        Returns: undefined;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
@@ -495,3 +558,5 @@ export type WeeklyWinner =
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type CommentReport =
   Database["public"]["Tables"]["comment_reports"]["Row"];
+export type Notification =
+  Database["public"]["Tables"]["notifications"]["Row"];

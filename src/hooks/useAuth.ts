@@ -9,18 +9,23 @@ export function useAuth() {
   const [crownCount, setCrownCount] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   async function fetchProfile(userId: string) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("crown_count, avatar_url, display_name")
-      .eq("id", userId)
-      .single();
+    const [{ data }, { data: notifCount }] = await Promise.all([
+      supabase
+        .from("profiles")
+        .select("crown_count, avatar_url, display_name")
+        .eq("id", userId)
+        .single(),
+      supabase.rpc("get_unread_notification_count", { p_user_id: userId }),
+    ]);
     setCrownCount(data?.crown_count ?? 0);
     setAvatarUrl(data?.avatar_url ?? null);
     setDisplayName(data?.display_name ?? null);
+    setUnreadCount(notifCount ?? 0);
   }
 
   useEffect(() => {
@@ -41,6 +46,7 @@ export function useAuth() {
         setCrownCount(0);
         setAvatarUrl(null);
         setDisplayName(null);
+        setUnreadCount(0);
       }
       setLoading(false);
     });
@@ -52,5 +58,5 @@ export function useAuth() {
     await supabase.auth.signOut();
   };
 
-  return { user, crownCount, avatarUrl, displayName, loading, signOut };
+  return { user, crownCount, avatarUrl, displayName, unreadCount, setUnreadCount, loading, signOut };
 }

@@ -17,6 +17,7 @@ interface PostWithJoins {
   species: { id: number; scientific_name: string; common_names: string[] } | null;
   profile: { id: string; display_name: string; avatar_url: string | null };
   votes: { id: string; user_id: string }[];
+  comments: { count: number }[];
 }
 
 interface WinnerRow {
@@ -54,7 +55,8 @@ export default async function HomePage() {
         `*,
         species:species_id (id, scientific_name, common_names),
         profile:user_id (id, display_name, avatar_url),
-        votes (id, user_id)`
+        votes (id, user_id),
+        comments (count)`
       )
       .eq("week_year", currentWeek || "")
       .eq("is_hidden", false)
@@ -93,6 +95,7 @@ export default async function HomePage() {
       user_has_voted: user
         ? post.votes?.some((v) => v.user_id === user.id) || false
         : false,
+      comment_count: post.comments?.[0]?.count || 0,
     }));
 
   transformedPosts.sort((a, b) => b.vote_count - a.vote_count);

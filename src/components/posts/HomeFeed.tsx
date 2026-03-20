@@ -73,7 +73,8 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
         `*,
         species:species_id (id, scientific_name, common_names),
         profile:user_id (id, display_name, avatar_url),
-        votes (id, user_id)`
+        votes (id, user_id),
+        comments (count)`
       )
       .eq("is_hidden", false)
       .eq("is_removed", false)
@@ -100,6 +101,7 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
       species: { id: number; scientific_name: string; common_names: string[] } | null;
       profile: { id: string; display_name: string; avatar_url: string | null };
       votes: { id: string; user_id: string }[];
+      comments: { count: number }[];
     }
 
     const rows = (data || []) as unknown as PostRow[];
@@ -121,6 +123,7 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
         user_has_voted: userId
           ? post.votes?.some((v) => v.user_id === userId) || false
           : false,
+        comment_count: post.comments?.[0]?.count || 0,
       }));
 
     if (sort === "top") {

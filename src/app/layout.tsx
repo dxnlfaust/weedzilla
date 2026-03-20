@@ -5,7 +5,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
 import { ProgressBar } from "@/components/layout/ProgressBar";
-import { WinNotifier } from "@/components/layout/WinNotifier";
 import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistrar";
 import "./globals.css";
 
@@ -57,7 +56,6 @@ export default function RootLayout({
         <Footer />
         <BottomNav />
         <ProgressBar />
-        <WinNotifier />
         <ServiceWorkerRegistrar />
         <Toaster position="bottom-right" richColors />
       </body>

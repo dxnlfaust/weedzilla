@@ -42,7 +42,8 @@ export default async function ProfilePage() {
       `
       *,
       species:species_id (id, scientific_name, common_names),
-      votes (id, user_id)
+      votes (id, user_id),
+      comments (count)
     `
     )
     .eq("user_id", user.id)
@@ -59,6 +60,7 @@ export default async function ProfilePage() {
     created_at: string;
     species: { id: number; scientific_name: string; common_names: string[] } | null;
     votes: { id: string; user_id: string }[];
+    comments: { count: number }[];
   }[];
 
   const transformedPosts = posts.map((post) => ({
@@ -79,6 +81,7 @@ export default async function ProfilePage() {
     vote_count: post.votes?.length || 0,
     user_has_voted:
       post.votes?.some((v) => v.user_id === user.id) || false,
+    comment_count: post.comments?.[0]?.count || 0,
   }));
 
   return (

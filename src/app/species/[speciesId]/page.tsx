@@ -16,6 +16,7 @@ interface PostWithJoins {
   species: { id: number; scientific_name: string; common_names: string[] } | null;
   profile: { id: string; display_name: string; avatar_url: string | null };
   votes: { id: string; user_id: string }[];
+  comments: { count: number }[];
 }
 
 interface SpeciesDetailPageProps {
@@ -69,7 +70,8 @@ export default async function SpeciesDetailPage({
       *,
       species:species_id (id, scientific_name, common_names),
       profile:user_id (id, display_name, avatar_url),
-      votes (id, user_id)
+      votes (id, user_id),
+      comments (count)
     `
     )
     .eq("species_id", Number(speciesId))
@@ -97,6 +99,7 @@ export default async function SpeciesDetailPage({
       user_has_voted: user
         ? post.votes?.some((v) => v.user_id === user.id) || false
         : false,
+      comment_count: post.comments?.[0]?.count || 0,
     }));
 
   return (

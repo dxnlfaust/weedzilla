@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MessageCircle } from "lucide-react";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { CompareSlider } from "./CompareSlider";
@@ -26,6 +27,7 @@ export interface PostCardData {
   };
   vote_count: number;
   user_has_voted: boolean;
+  comment_count: number;
 }
 
 interface PostCardProps {
@@ -80,12 +82,21 @@ export function PostCard({ post }: PostCardProps) {
           </span>
         </div>
         <div className="flex items-center justify-between pt-1 border-t border-gray-100">
-          <VoteButton
-            postId={post.id}
-            weekYear={post.week_year}
-            initialHasVoted={post.user_has_voted}
-            initialVoteCount={post.vote_count}
-          />
+          <div className="flex items-center gap-3">
+            <VoteButton
+              postId={post.id}
+              weekYear={post.week_year}
+              initialHasVoted={post.user_has_voted}
+              initialVoteCount={post.vote_count}
+            />
+            <Link
+              href={`/post/${post.id}`}
+              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-eucalypt transition-colors duration-150"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span>{post.comment_count}</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { CrownBadge } from "@/components/profile/CrownBadge";
 import { UploadPopover } from "./UploadPopover";
-import { Trophy, Leaf, Home, Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3 } from "lucide-react";
+import { Trophy, Leaf, Home, Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { avatarSm } from "@/lib/utils/image";
 
 export function Navbar() {
-  const { user, crownCount, avatarUrl, displayName, loading, signOut } = useAuth();
+  const { user, crownCount, avatarUrl, displayName, unreadCount, loading, signOut } = useAuth();
 
   return (
     <nav className="fixed top-0 inset-x-0 bg-white text-eucalypt-dark z-40">
@@ -68,7 +68,7 @@ export function Navbar() {
                   </span>
                 )}
                 <Menu as="div" className="relative">
-                  <MenuButton className="outline-none">
+                  <MenuButton className="outline-none relative">
                     {avatarUrl ? (
                       <img
                         src={avatarSm(avatarUrl)}
@@ -79,6 +79,11 @@ export function Navbar() {
                       <div className="h-8 w-8 rounded-full bg-eucalypt-dark flex items-center justify-center text-sm font-bold text-white border-2 border-eucalypt-dark/20 hover:border-eucalypt-dark/50 transition-colors">
                         {displayName?.[0]?.toUpperCase() || "?"}
                       </div>
+                    )}
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
                     )}
                   </MenuButton>
                   <Transition
@@ -98,6 +103,20 @@ export function Navbar() {
                         >
                           <User className="h-4 w-4 text-gray-400" />
                           Profile
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          href="/notifications"
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                        >
+                          <Bell className="h-4 w-4 text-gray-400" />
+                          Notifications
+                          {unreadCount > 0 && (
+                            <span className="ml-auto bg-red text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                              {unreadCount > 99 ? "99+" : unreadCount}
+                            </span>
+                          )}
                         </Link>
                       </MenuItem>
                       <MenuItem>

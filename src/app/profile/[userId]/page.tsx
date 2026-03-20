@@ -46,7 +46,8 @@ export default async function PublicProfilePage({
       `
       *,
       species:species_id (id, scientific_name, common_names),
-      votes (id, user_id)
+      votes (id, user_id),
+      comments (count)
     `
     )
     .eq("user_id", userId)
@@ -65,6 +66,7 @@ export default async function PublicProfilePage({
     created_at: string;
     species: { id: number; scientific_name: string; common_names: string[] } | null;
     votes: { id: string; user_id: string }[];
+    comments: { count: number }[];
   }[];
 
   const transformedPosts = posts.map((post) => ({
@@ -86,6 +88,7 @@ export default async function PublicProfilePage({
     user_has_voted: user
       ? post.votes?.some((v) => v.user_id === user.id) || false
       : false,
+    comment_count: post.comments?.[0]?.count || 0,
   }));
 
   return (

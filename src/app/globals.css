@@ -16,3 +16,17 @@
 body {
   @apply bg-white text-carbon antialiased;
 }
+
+/* Admin button utilities */
+.btn-success {
+  @apply bg-eucalypt text-white rounded-lg font-medium hover:bg-eucalypt-light transition-colors;
+}
+.btn-danger {
+  @apply bg-red text-white rounded-lg font-medium hover:opacity-90 transition-opacity;
+}
+.btn-warning {
+  @apply bg-gold text-white rounded-lg font-medium hover:opacity-90 transition-opacity;
+}
+.btn-ghost {
+  @apply border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition-colors;
+}

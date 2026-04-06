@@ -19,7 +19,7 @@ interface PostWithJoins {
     common_names: string[];
     family: string | null;
   } | null;
-  profile: { id: string; display_name: string; avatar_url: string | null };
+  profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
   votes: { id: string; user_id: string }[];
 }
 
@@ -74,7 +74,7 @@ export default async function PostPage({ params }: PostPageProps) {
       `
       *,
       species:species_id (id, scientific_name, common_names, family),
-      profile:user_id (id, display_name, avatar_url),
+      profile:user_id (id, display_name, avatar_url, crown_count),
       votes (id, user_id)
     `
     )
@@ -92,7 +92,7 @@ export default async function PostPage({ params }: PostPageProps) {
     .from("comments")
     .select(
       `id, content, created_at, user_id,
-      profile:user_id (id, display_name, avatar_url)`
+      profile:user_id (id, display_name, avatar_url, crown_count)`
     )
     .eq("post_id", postId)
     .order("created_at", { ascending: true });
@@ -102,7 +102,7 @@ export default async function PostPage({ params }: PostPageProps) {
     content: string;
     created_at: string;
     user_id: string;
-    profile: { id: string; display_name: string; avatar_url: string | null };
+    profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
   }[];
 
   const transformedPost = {

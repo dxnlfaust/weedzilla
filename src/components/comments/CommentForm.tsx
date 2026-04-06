@@ -13,7 +13,7 @@ interface CommentFormProps {
     content: string;
     created_at: string;
     user_id: string;
-    profile: { id: string; display_name: string; avatar_url: string | null };
+    profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
   }) => void;
 }
 
@@ -39,7 +39,7 @@ export function CommentForm({ postId, userId, onCommentAdded }: CommentFormProps
       })
       .select(
         `id, content, created_at, user_id,
-        profile:user_id (id, display_name, avatar_url)`
+        profile:user_id (id, display_name, avatar_url, crown_count)`
       )
       .single();
 
@@ -54,7 +54,7 @@ export function CommentForm({ postId, userId, onCommentAdded }: CommentFormProps
       content: string;
       created_at: string;
       user_id: string;
-      profile: { id: string; display_name: string; avatar_url: string | null };
+      profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
     };
 
     onCommentAdded(row);

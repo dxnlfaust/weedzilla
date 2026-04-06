@@ -77,6 +77,7 @@ export default async function ProfilePage() {
       id: profile.id,
       display_name: profile.display_name,
       avatar_url: profile.avatar_url,
+      crown_count: profile.crown_count,
     },
     vote_count: post.votes?.length || 0,
     user_has_voted:

@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 
 interface HomeFeedProps {
   initialPosts: PostCardData[];
+  olderPosts: PostCardData[];
   currentWeek: string;
   userId: string | null;
 }
@@ -40,7 +41,7 @@ function PillButton({
   );
 }
 
-export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
+export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: HomeFeedProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -72,7 +73,7 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
       .select(
         `*,
         species:species_id (id, scientific_name, common_names),
-        profile:user_id (id, display_name, avatar_url),
+        profile:user_id (id, display_name, avatar_url, crown_count),
         votes (id, user_id),
         comments (count)`
       )
@@ -99,7 +100,7 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
       week_year: string;
       created_at: string;
       species: { id: number; scientific_name: string; common_names: string[] } | null;
-      profile: { id: string; display_name: string; avatar_url: string | null };
+      profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
       votes: { id: string; user_id: string }[];
       comments: { count: number }[];
     }
@@ -170,8 +171,15 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
     }
   }, []);
 
+  const hasCurrentPosts = posts.length > 0 || initialPosts.length > 0;
+
   return (
     <div>
+      {/* Heading */}
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+        Weed Feed
+      </h2>
+
       {/* Filter bar */}
       <div className="flex items-center justify-between gap-2 mb-6">
         {/* Post type filter */}
@@ -199,27 +207,48 @@ export function HomeFeed({ initialPosts, currentWeek, userId }: HomeFeedProps) {
         </div>
       </div>
 
-      <PostGrid posts={posts} />
+      {/* No current-week posts: show older posts as fallback */}
+      {posts.length === 0 && !loading && olderPosts.length > 0 ? (
+        <PostGrid posts={olderPosts} />
+      ) : (
+        <>
+          <PostGrid posts={posts} />
 
-      {/* Load more */}
-      {hasMore && posts.length > 0 && (
-        <div className="text-center mt-6">
-          <button
-            type="button"
-            onClick={loadMore}
-            disabled={loading}
-            className="border border-eucalypt text-eucalypt hover:bg-eucalypt hover:text-white rounded-lg px-6 py-2 text-sm font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Loading...
-              </span>
-            ) : (
-              "Load More"
-            )}
-          </button>
-        </div>
+          {/* Load more current-week posts */}
+          {hasMore && posts.length > 0 && (
+            <div className="text-center mt-6">
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={loading}
+                className="border border-eucalypt text-eucalypt hover:bg-eucalypt hover:text-white rounded-lg px-6 py-2 text-sm font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading...
+                  </span>
+                ) : (
+                  "Load More"
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* Older posts section with divider */}
+          {posts.length > 0 && olderPosts.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex-1 border-t border-gray-200" />
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  Previous Weeks
+                </span>
+                <div className="flex-1 border-t border-gray-200" />
+              </div>
+              <PostGrid posts={olderPosts} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

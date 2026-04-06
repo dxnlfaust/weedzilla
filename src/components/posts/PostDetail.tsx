@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Crown } from "lucide-react";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { ReportButton } from "@/components/reports/ReportButton";
@@ -29,6 +30,7 @@ interface PostDetailProps {
       id: string;
       display_name: string;
       avatar_url: string | null;
+      crown_count: number;
     };
     vote_count: number;
     user_has_voted: boolean;
@@ -103,6 +105,12 @@ export function PostDetail({ post, userId, postUrl, comments }: PostDetailProps)
                   </div>
                 )}
                 {post.profile.display_name}
+                {post.profile.crown_count > 0 && (
+                  <span className="inline-flex items-center gap-0.5 text-gold">
+                    <Crown className="h-3 w-3" />
+                    <span className="text-xs font-medium">{post.profile.crown_count}</span>
+                  </span>
+                )}
               </Link>
               <span className="text-xs text-gray-400">
                 {formatRelativeTime(post.created_at)}

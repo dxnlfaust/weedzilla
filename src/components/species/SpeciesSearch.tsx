@@ -88,19 +88,7 @@ export function SpeciesSearch({ onSelect, selectedId }: SpeciesSearchProps) {
         {query.length >= 2 && (
           <ComboboxOptions className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white border border-gray-200 py-1 shadow-lg">
             {results.length === 0 && !loading && (
-              <div className="px-3 py-2">
-                <p className="text-sm text-gray-500 mb-2">No species found.</p>
-                {user && (
-                  <button
-                    type="button"
-                    onClick={handleSubmitNewSpecies}
-                    className="flex items-center gap-1 text-sm text-eucalypt hover:text-eucalypt-light font-medium"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Submit &ldquo;{query}&rdquo; as a new species
-                  </button>
-                )}
-              </div>
+              <p className="px-3 py-2 text-sm text-gray-500">No matching species found.</p>
             )}
 
             {results.map((species) => (
@@ -136,6 +124,20 @@ export function SpeciesSearch({ onSelect, selectedId }: SpeciesSearchProps) {
                 )}
               </ComboboxOption>
             ))}
+
+            {/* Always offer submitting a new species */}
+            {user && !loading && (
+              <div className="border-t border-gray-100 mt-1 pt-1">
+                <button
+                  type="button"
+                  onClick={handleSubmitNewSpecies}
+                  className="flex items-center gap-1.5 w-full px-3 py-2 text-sm text-eucalypt hover:bg-eucalypt/5 transition-colors font-medium"
+                >
+                  <Plus className="h-4 w-4 shrink-0" />
+                  Submit &ldquo;{query}&rdquo; as a new species
+                </button>
+              </div>
+            )}
           </ComboboxOptions>
         )}
       </div>

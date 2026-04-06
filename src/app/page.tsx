@@ -15,7 +15,7 @@ interface PostWithJoins {
   week_year: string;
   created_at: string;
   species: { id: number; scientific_name: string; common_names: string[] } | null;
-  profile: { id: string; display_name: string; avatar_url: string | null };
+  profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
   votes: { id: string; user_id: string }[];
   comments: { count: number }[];
 }
@@ -47,17 +47,17 @@ export default async function HomePage() {
     supabase.rpc("get_previous_week_year"),
   ]);
 
-  // Fetch this week's posts and last week's winners in parallel
-  const [{ data }, { data: winnersRaw }] = await Promise.all([
+  const postSelect = `*,
+    species:species_id (id, scientific_name, common_names),
+    profile:user_id (id, display_name, avatar_url, crown_count),
+    votes (id, user_id),
+    comments (count)`;
+
+  // Fetch this week's posts, last week's winners, and older posts in parallel
+  const [{ data }, { data: winnersRaw }, { data: olderData }] = await Promise.all([
     supabase
       .from("posts")
-      .select(
-        `*,
-        species:species_id (id, scientific_name, common_names),
-        profile:user_id (id, display_name, avatar_url),
-        votes (id, user_id),
-        comments (count)`
-      )
+      .select(postSelect)
       .eq("week_year", currentWeek || "")
       .eq("is_hidden", false)
       .eq("is_removed", false)
@@ -73,32 +73,47 @@ export default async function HomePage() {
       .eq("week_year", prevWeek || "")
       .eq("place", 1)
       .order("vote_count", { ascending: false }),
+    supabase
+      .from("posts")
+      .select(postSelect)
+      .neq("week_year", currentWeek || "")
+      .eq("is_hidden", false)
+      .eq("is_removed", false)
+      .order("created_at", { ascending: false })
+      .limit(12),
   ]);
 
   const posts = (data || []) as unknown as PostWithJoins[];
+  const olderPosts = (olderData || []) as unknown as PostWithJoins[];
   const winners = (winnersRaw || []) as unknown as WinnerRow[];
 
-  const transformedPosts = posts
-    .filter((post) => post.profile != null)
-    .map((post) => ({
-      id: post.id,
-      image_url: post.image_url,
-      image_url_after: post.image_url_after,
-      caption: post.caption,
-      site_description: post.site_description,
-      post_type: post.post_type,
-      week_year: post.week_year,
-      created_at: post.created_at,
-      species: post.species,
-      profile: post.profile,
-      vote_count: post.votes?.length || 0,
-      user_has_voted: user
-        ? post.votes?.some((v) => v.user_id === user.id) || false
-        : false,
-      comment_count: post.comments?.[0]?.count || 0,
-    }));
+  function transformPosts(raw: PostWithJoins[]) {
+    return raw
+      .filter((post) => post.profile != null)
+      .map((post) => ({
+        id: post.id,
+        image_url: post.image_url,
+        image_url_after: post.image_url_after,
+        caption: post.caption,
+        site_description: post.site_description,
+        post_type: post.post_type,
+        week_year: post.week_year,
+        created_at: post.created_at,
+        species: post.species,
+        profile: post.profile,
+        vote_count: post.votes?.length || 0,
+        user_has_voted: user
+          ? post.votes?.some((v) => v.user_id === user.id) || false
+          : false,
+        comment_count: post.comments?.[0]?.count || 0,
+      }));
+  }
 
+  const transformedPosts = transformPosts(posts);
   transformedPosts.sort((a, b) => b.vote_count - a.vote_count);
+
+  const transformedOlderPosts = transformPosts(olderPosts);
+  transformedOlderPosts.sort((a, b) => b.vote_count - a.vote_count);
 
   const transformedWinners: LastWeekWinnerData[] = winners
     .filter((w) => w.post != null && w.profile != null)
@@ -122,6 +137,7 @@ export default async function HomePage() {
       <LastWeekWinners weedWinner={weedWinner} baWinner={baWinner} weekYear={prevWeek || ""} />
       <HomeFeed
         initialPosts={transformedPosts}
+        olderPosts={transformedOlderPosts}
         currentWeek={currentWeek || ""}
         userId={user?.id || null}
       />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Trash2, Flag } from "lucide-react";
+import { Trash2, Flag, Crown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ReportDialog } from "@/components/reports/ReportDialog";
@@ -17,6 +17,7 @@ export interface CommentData {
     id: string;
     display_name: string;
     avatar_url: string | null;
+    crown_count: number;
   };
 }
 
@@ -71,9 +72,15 @@ export function CommentItem({ comment, userId, onDeleted }: CommentItemProps) {
         <div className="flex items-center gap-2">
           <Link
             href={`/profile/${comment.profile.id}`}
-            className="text-sm font-medium text-carbon hover:text-eucalypt transition-colors"
+            className="inline-flex items-center gap-1 text-sm font-medium text-carbon hover:text-eucalypt transition-colors"
           >
             {comment.profile.display_name}
+            {comment.profile.crown_count > 0 && (
+              <span className="inline-flex items-center gap-0.5 text-gold">
+                <Crown className="h-3 w-3" />
+                <span className="text-xs font-medium">{comment.profile.crown_count}</span>
+              </span>
+            )}
           </Link>
           <span className="text-xs text-gray-400">
             {formatRelativeTime(comment.created_at)}

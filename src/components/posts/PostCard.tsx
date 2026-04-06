@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Crown } from "lucide-react";
 import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { CompareSlider } from "./CompareSlider";
@@ -24,6 +24,7 @@ export interface PostCardData {
     id: string;
     display_name: string;
     avatar_url: string | null;
+    crown_count: number;
   };
   vote_count: number;
   user_has_voted: boolean;
@@ -73,9 +74,15 @@ export function PostCard({ post }: PostCardProps) {
         <div className="flex items-center justify-between">
           <Link
             href={`/profile/${post.profile.id}`}
-            className="text-sm text-gray-500 hover:text-carbon transition-colors duration-150"
+            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-carbon transition-colors duration-150"
           >
             {post.profile.display_name}
+            {post.profile.crown_count > 0 && (
+              <span className="inline-flex items-center gap-0.5 text-gold">
+                <Crown className="h-3 w-3" />
+                <span className="text-xs font-medium">{post.profile.crown_count}</span>
+              </span>
+            )}
           </Link>
           <span className="text-xs text-gray-400">
             {formatRelativeTime(post.created_at)}

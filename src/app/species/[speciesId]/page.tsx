@@ -14,7 +14,7 @@ interface PostWithJoins {
   week_year: string;
   created_at: string;
   species: { id: number; scientific_name: string; common_names: string[] } | null;
-  profile: { id: string; display_name: string; avatar_url: string | null };
+  profile: { id: string; display_name: string; avatar_url: string | null; crown_count: number };
   votes: { id: string; user_id: string }[];
   comments: { count: number }[];
 }
@@ -69,7 +69,7 @@ export default async function SpeciesDetailPage({
       `
       *,
       species:species_id (id, scientific_name, common_names),
-      profile:user_id (id, display_name, avatar_url),
+      profile:user_id (id, display_name, avatar_url, crown_count),
       votes (id, user_id),
       comments (count)
     `

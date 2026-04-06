@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ProgressBar } from "@/components/layout/ProgressBar";
+import { PWAInstallBanner } from "@/components/layout/PWAInstallBanner";
 import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistrar";
 import "./globals.css";
 
@@ -52,6 +53,7 @@ export default function RootLayout({
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-20 pb-20">
           {children}
         </main>
+        <PWAInstallBanner />
         <BottomNav />
         <ProgressBar />
         <ServiceWorkerRegistrar />

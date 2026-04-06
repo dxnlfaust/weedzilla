@@ -17,6 +17,7 @@ type Mode = "android" | "ios" | "ios-instructions";
 export function PWAInstallBanner() {
   const [mode, setMode] = useState<Mode | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     // Already installed (standalone mode)
@@ -93,11 +94,30 @@ export function PWAInstallBanner() {
       <div className="bg-white border border-eucalypt text-eucalypt-dark rounded-xl shadow-lg px-4 py-3">
         {mode === "ios-instructions" ? (
           <div className="flex items-start justify-between gap-3">
-            <p className="text-sm leading-snug">
-              Tap{" "}
-              <Share className="h-4 w-4 inline-block mx-0.5 align-middle text-eucalypt" />
-              {" "}then <strong>Add to Home Screen</strong>
-            </p>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm leading-snug">
+                Tap <Share className="h-4 w-4 inline-block mx-0.5 align-middle text-eucalypt" />{" "}
+                then <strong>Add to Home Screen</strong>
+              </p>
+              {showDetails ? (
+                <ol className="mt-2 space-y-1 text-sm text-eucalypt-dark/80 leading-snug list-decimal list-inside">
+                  <li>On Safari, tap <strong>···</strong> in the toolbar</li>
+                  <li>
+                    Tap <strong>Share</strong>{" "}
+                    <Share className="h-3.5 w-3.5 inline-block mx-0.5 align-middle text-eucalypt" />
+                  </li>
+                  <li>Select <strong>Add to Home Screen</strong> — it may be under <strong>More</strong></li>
+                </ol>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowDetails(true)}
+                  className="mt-1 text-xs text-eucalypt underline underline-offset-2 hover:text-eucalypt-dark transition-colors"
+                >
+                  More details...
+                </button>
+              )}
+            </div>
             <button
               type="button"
               onClick={dismiss}

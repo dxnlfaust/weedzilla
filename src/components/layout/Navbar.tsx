@@ -38,13 +38,13 @@ export function Navbar() {
 
           {/* Left: WeedZilla | Page Title */}
           <div className="flex items-center gap-2 min-w-0">
-            <Link href="/" className="text-xl font-bold tracking-tight text-eucalypt-dark shrink-0">
+            <Link href="/" className="text-lg font-bold tracking-tight text-eucalypt-dark shrink-0">
               WeedZilla
             </Link>
             {pageTitle && (
               <>
-                <span className="text-xl font-bold text-eucalypt-dark/40 shrink-0">|</span>
-                <span className="text-xl font-bold text-eucalypt-dark truncate">{pageTitle}</span>
+                <span className="text-lg text-eucalypt-dark/40 shrink-0">|</span>
+                <span className="text-lg text-eucalypt-dark truncate">{pageTitle}</span>
               </>
             )}
           </div>

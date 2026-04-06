@@ -22,6 +22,8 @@ export const metadata: Metadata = {
     "Share your weed removal wins and compete in weekly voting competitions!",
   manifest: "/manifest.json",
   icons: [
+    // iOS home screen icon — must be PNG, manifest icons are ignored by iOS
+    { rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
     { url: "/icon-192x192.svg", sizes: "192x192", type: "image/svg+xml" },
     { url: "/icon-512x512.svg", sizes: "512x512", type: "image/svg+xml" },
   ],

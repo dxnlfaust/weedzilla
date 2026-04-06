@@ -88,20 +88,20 @@ export function PWAInstallBanner() {
   return (
     <div
       className="fixed inset-x-0 z-30 px-3"
-      style={{ bottom: "calc(3.5rem + env(safe-area-inset-bottom))" }}
+      style={{ bottom: "calc(3.5rem + env(safe-area-inset-bottom) + 0.5rem)" }}
     >
-      <div className="bg-eucalypt-dark text-white rounded-xl shadow-xl px-4 py-3">
+      <div className="bg-white border border-eucalypt text-eucalypt-dark rounded-xl shadow-lg px-4 py-3">
         {mode === "ios-instructions" ? (
           <div className="flex items-start justify-between gap-3">
             <p className="text-sm leading-snug">
               Tap{" "}
-              <Share className="h-4 w-4 inline-block mx-0.5 align-middle" />
+              <Share className="h-4 w-4 inline-block mx-0.5 align-middle text-eucalypt" />
               {" "}then <strong>Add to Home Screen</strong>
             </p>
             <button
               type="button"
               onClick={dismiss}
-              className="text-white/60 hover:text-white shrink-0 p-1 -mt-0.5 -mr-1"
+              className="text-eucalypt hover:text-eucalypt-dark shrink-0 p-1 -mt-0.5 -mr-1 transition-colors"
               aria-label="Dismiss"
             >
               <X className="h-4 w-4" />
@@ -114,14 +114,14 @@ export function PWAInstallBanner() {
               <button
                 type="button"
                 onClick={handleInstall}
-                className="bg-white text-eucalypt-dark text-sm font-semibold px-3 py-1.5 rounded-lg hover:bg-white/90 transition-colors"
+                className="bg-eucalypt text-white text-sm font-semibold px-3 py-1.5 rounded-lg hover:bg-eucalypt-dark transition-colors"
               >
                 Install
               </button>
               <button
                 type="button"
                 onClick={dismiss}
-                className="text-white/60 hover:text-white p-1 -mr-1"
+                className="text-eucalypt hover:text-eucalypt-dark p-1 -mr-1 transition-colors"
                 aria-label="Dismiss"
               >
                 <X className="h-4 w-4" />

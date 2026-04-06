@@ -122,14 +122,6 @@ export default function WinnersPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-1">
-          <Crown className="h-6 w-6 text-gold" />
-          <h1 className="text-2xl font-bold text-carbon">Winners</h1>
-        </div>
-      </div>
-
       {/* Category toggle */}
       <div className="flex gap-2 mb-8">
         <button

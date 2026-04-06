@@ -1,63 +1,56 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { CrownBadge } from "@/components/profile/CrownBadge";
 import { UploadPopover } from "./UploadPopover";
-import { Trophy, Leaf, Home, Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell } from "lucide-react";
+import { Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { avatarSm } from "@/lib/utils/image";
 
+function getPageTitle(pathname: string): string {
+  if (pathname === "/") return "Weed Feed";
+  if (pathname === "/upload" || pathname.startsWith("/upload?")) return "Upload";
+  if (pathname === "/species") return "Species";
+  if (pathname.startsWith("/species/")) return "Species";
+  if (pathname === "/winners") return "Winners";
+  if (pathname === "/leaderboard") return "Leaderboard";
+  if (pathname === "/profile") return "Profile";
+  if (pathname.startsWith("/profile/")) return "Profile";
+  if (pathname === "/notifications") return "Notifications";
+  if (pathname === "/about") return "About";
+  if (pathname === "/login") return "Log In";
+  if (pathname === "/signup") return "Sign Up";
+  return "";
+}
+
 export function Navbar() {
+  const pathname = usePathname();
   const { user, crownCount, avatarUrl, displayName, unreadCount, loading, signOut } = useAuth();
+  const pageTitle = getPageTitle(pathname);
 
   return (
     <nav className="fixed top-0 inset-x-0 bg-white text-eucalypt-dark z-40">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold tracking-tight text-eucalypt-dark">
-            WeedZilla
-          </Link>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
-            >
-              <Home className="h-4 w-4" />
-              Home
+          {/* Left: WeedZilla | Page Title */}
+          <div className="flex items-center gap-2 min-w-0">
+            <Link href="/" className="text-xl font-bold tracking-tight text-eucalypt-dark shrink-0">
+              WeedZilla
             </Link>
-            <Link
-              href="/species"
-              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
-            >
-              <Leaf className="h-4 w-4" />
-              Species
-            </Link>
-            <Link
-              href="/winners"
-              className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1"
-            >
-              <Trophy className="h-4 w-4" />
-              Winners
-            </Link>
-            <UploadPopover
-              isLoggedIn={!!user}
-              position="below"
-              trigger={
-                <span className="text-sm font-medium text-eucalypt-dark hover:text-eucalypt transition-colors duration-150 flex items-center gap-1">
-                  <Upload className="h-4 w-4" />
-                  Upload
-                </span>
-              }
-            />
+            {pageTitle && (
+              <>
+                <span className="text-xl font-bold text-eucalypt-dark/40 shrink-0">|</span>
+                <span className="text-xl font-bold text-eucalypt-dark truncate">{pageTitle}</span>
+              </>
+            )}
           </div>
 
-          {/* Desktop + Mobile: avatar dropdown (right side) */}
-          <div className="flex items-center gap-3">
+          {/* Right: user avatar / login */}
+          <div className="flex items-center gap-3 shrink-0">
             {loading ? (
               <div className="h-8 w-8 bg-eucalypt-dark/10 rounded-full animate-pulse" />
             ) : user ? (
@@ -127,6 +120,18 @@ export function Navbar() {
                           <BarChart3 className="h-4 w-4 text-gray-400" />
                           Leaderboard
                         </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <UploadPopover
+                          isLoggedIn={true}
+                          position="below"
+                          trigger={
+                            <span className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 w-full">
+                              <Upload className="h-4 w-4 text-gray-400" />
+                              Upload
+                            </span>
+                          }
+                        />
                       </MenuItem>
                       <MenuItem>
                         <Link

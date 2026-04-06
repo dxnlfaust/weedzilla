@@ -66,11 +66,6 @@ export default function NotificationsPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-carbon mb-6 flex items-center gap-2">
-        <Bell className="h-6 w-6" />
-        Notifications
-      </h1>
-
       {notifications.length === 0 ? (
         <div className="text-center py-12">
           <Bell className="h-10 w-10 text-gray-300 mx-auto mb-3" />

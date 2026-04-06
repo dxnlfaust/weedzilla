@@ -89,8 +89,6 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-carbon mb-6">Leaderboard</h1>
-
       <div className="space-y-8">
         {/* Top Users */}
         <section>

@@ -175,11 +175,6 @@ export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: Home
 
   return (
     <div>
-      {/* Heading */}
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-        Weed Feed
-      </h2>
-
       {/* Filter bar */}
       <div className="flex items-center justify-between gap-2 mb-6">
         {/* Post type filter */}

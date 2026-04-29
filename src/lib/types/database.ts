@@ -126,6 +126,7 @@ export interface Database {
           image_url: string;
           thumbnail_url: string | null;
           image_url_after: string | null;
+          thumbnail_url_after: string | null;
           caption: string | null;
           site_description: string | null;
           post_type: "weed" | "before_after";
@@ -143,6 +144,7 @@ export interface Database {
           image_url: string;
           thumbnail_url?: string | null;
           image_url_after?: string | null;
+          thumbnail_url_after?: string | null;
           caption?: string | null;
           site_description?: string | null;
           post_type?: "weed" | "before_after";
@@ -160,6 +162,7 @@ export interface Database {
           image_url?: string;
           thumbnail_url?: string | null;
           image_url_after?: string | null;
+          thumbnail_url_after?: string | null;
           caption?: string | null;
           site_description?: string | null;
           post_type?: "weed" | "before_after";

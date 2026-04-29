@@ -158,13 +158,14 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
       const supabase = createClient();
 
       if (postType === "weed") {
-        const imageUrl = await uploadPostImage(file!, userId);
+        const { displayUrl, thumbUrl } = await uploadPostImage(file!, userId);
         const { data, error } = await supabase
           .from("posts")
           .insert({
             user_id: userId,
             species_id: speciesId,
-            image_url: imageUrl,
+            image_url: displayUrl,
+            thumbnail_url: thumbUrl,
             caption: caption || null,
             week_year: weekYear,
             post_type: "weed",
@@ -176,7 +177,7 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
         toast.success("Post uploaded!");
         router.push(`/post/${data.id}`);
       } else {
-        const [beforeUrl, afterUrl] = await Promise.all([
+        const [before, after] = await Promise.all([
           uploadPostImage(beforeFile!, userId),
           uploadPostImage(afterFile!, userId),
         ]);
@@ -186,8 +187,10 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
           .insert({
             user_id: userId,
             species_id: speciesId || null,
-            image_url: beforeUrl,
-            image_url_after: afterUrl,
+            image_url: before.displayUrl,
+            thumbnail_url: before.thumbUrl,
+            image_url_after: after.displayUrl,
+            thumbnail_url_after: after.thumbUrl,
             caption: caption || null,
             site_description: siteDescription.trim() || null,
             week_year: weekYear,

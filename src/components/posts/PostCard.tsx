@@ -4,12 +4,13 @@ import { SpeciesBadge } from "@/components/species/SpeciesBadge";
 import { VoteButton } from "@/components/voting/VoteButton";
 import { CompareSlider } from "./CompareSlider";
 import { formatRelativeTime } from "@/lib/utils/formatters";
-import { thumbnail } from "@/lib/utils/image";
 
 export interface PostCardData {
   id: string;
   image_url: string;
+  thumbnail_url?: string | null;
   image_url_after?: string | null;
+  thumbnail_url_after?: string | null;
   caption: string | null;
   site_description?: string | null;
   post_type: "weed" | "before_after";
@@ -45,32 +46,32 @@ export function PostCard({ post }: PostCardProps) {
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {isBA ? (
         <CompareSlider
-          beforeSrc={thumbnail(post.image_url)}
-          afterSrc={thumbnail(post.image_url_after)}
+          beforeSrc={post.thumbnail_url ?? post.image_url}
+          afterSrc={post.thumbnail_url_after ?? post.image_url_after ?? ""}
           alt={altText}
           compact
         />
       ) : (
         <Link href={`/post/${post.id}`} className="block">
           <img
-            src={thumbnail(post.image_url)}
+            src={post.thumbnail_url ?? post.image_url}
             alt={altText}
             className="w-full aspect-square object-cover"
           />
         </Link>
       )}
       <div className="p-3 space-y-2">
-        <Link href={`/post/${post.id}`} className="block">
-          {post.species ? (
-            <SpeciesBadge
-              speciesId={post.species.id}
-              scientificName={post.species.scientific_name}
-              commonName={post.species.common_names[0]}
-            />
-          ) : post.site_description ? (
+        {post.species ? (
+          <SpeciesBadge
+            speciesId={post.species.id}
+            scientificName={post.species.scientific_name}
+            commonName={post.species.common_names[0]}
+          />
+        ) : post.site_description ? (
+          <Link href={`/post/${post.id}`} className="block">
             <p className="text-sm text-gray-600 line-clamp-1">{post.site_description}</p>
-          ) : null}
-        </Link>
+          </Link>
+        ) : null}
         <div className="flex items-center justify-between">
           <Link
             href={`/profile/${post.profile.id}`}

@@ -8,7 +8,9 @@ import {
 interface PostWithJoins {
   id: string;
   image_url: string;
+  thumbnail_url: string | null;
   image_url_after: string | null;
+  thumbnail_url_after: string | null;
   caption: string | null;
   site_description: string | null;
   post_type: "weed" | "before_after";
@@ -93,7 +95,9 @@ export default async function HomePage() {
       .map((post) => ({
         id: post.id,
         image_url: post.image_url,
+        thumbnail_url: post.thumbnail_url,
         image_url_after: post.image_url_after,
+        thumbnail_url_after: post.thumbnail_url_after,
         caption: post.caption,
         site_description: post.site_description,
         post_type: post.post_type,

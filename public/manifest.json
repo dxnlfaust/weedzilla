@@ -1,7 +1,7 @@
 {
   "name": "WeedZilla",
   "short_name": "WeedZilla",
-  "description": "Share your big weeds and compete in weekly voting competitions!",
+  "description": "Share big weeds and compete in weekly voting competitions!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

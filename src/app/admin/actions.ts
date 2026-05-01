@@ -65,6 +65,24 @@ export async function rejectSpecies(formData: FormData) {
   revalidatePath("/admin");
 }
 
+export async function mergeSpecies(formData: FormData) {
+  await requireAdmin();
+  const pendingId = Number(formData.get("pending_id"));
+  const targetId = Number(formData.get("target_id"));
+
+  if (!pendingId || !targetId || pendingId === targetId) return;
+
+  const supabase = createAdminClient();
+  await Promise.all([
+    // Re-point all posts tagged with the duplicate to the canonical species
+    supabase.from("posts").update({ species_id: targetId }).eq("species_id", pendingId),
+    // Reject the duplicate entry
+    supabase.from("species").update({ status: "rejected" }).eq("id", pendingId),
+  ]);
+
+  revalidatePath("/admin");
+}
+
 // ============================================================
 // POST REPORTS
 // ============================================================

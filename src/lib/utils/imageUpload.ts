@@ -15,7 +15,7 @@ export async function uploadPostImage(
 
   const [displayBlob, thumbBlob] = await Promise.all([
     resizeImageToBlob(file, 1200, 0.8),
-    resizeImageToBlob(file, 400, 0.7),
+    resizeImageToBlob(file, 600, 0.85),
   ]);
 
   const displayPath = `${userId}/${id}-display.jpg`;

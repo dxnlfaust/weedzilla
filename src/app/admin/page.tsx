@@ -14,6 +14,7 @@ import {
   unhidePost,
   processWinners,
 } from "./actions";
+import { MergeSpeciesForm } from "@/components/admin/MergeSpeciesForm";
 
 // ============================================================
 // Types
@@ -206,12 +207,15 @@ export default async function AdminPage() {
                     </button>
                   </div>
                 </form>
-                <form action={rejectSpecies} className="inline mt-0">
-                  <input type="hidden" name="id" value={s.id} />
-                  <button type="submit" className="btn-danger text-sm px-3 py-1.5 mt-2">
-                    Reject
-                  </button>
-                </form>
+                <div className="flex items-center gap-2 mt-2">
+                  <form action={rejectSpecies}>
+                    <input type="hidden" name="id" value={s.id} />
+                    <button type="submit" className="btn-danger text-sm px-3 py-1.5">
+                      Reject
+                    </button>
+                  </form>
+                  <MergeSpeciesForm pendingId={s.id} pendingName={s.scientific_name} />
+                </div>
               </div>
             ))}
           </div>

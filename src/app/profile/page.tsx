@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { UserPosts } from "@/components/profile/UserPosts";
+import { DeleteAccountButton } from "@/components/profile/DeleteAccountButton";
 import type { Profile } from "@/lib/types/database";
 
 export default async function ProfilePage() {
@@ -113,6 +114,14 @@ export default async function ProfilePage() {
       <div>
         <h2 className="text-lg font-bold text-carbon mb-4">Your Posts</h2>
         <UserPosts posts={transformedPosts} isOwner />
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <h2 className="text-base font-semibold text-carbon mb-1">Danger zone</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Permanently delete your account and all associated data.
+        </p>
+        <DeleteAccountButton />
       </div>
     </div>
   );

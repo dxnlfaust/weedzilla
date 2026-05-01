@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "How WeedZilla collects, uses, and protects your information.",
 };
 
-const CONTACT_EMAIL = "daniel@faust.earth";
+const CONTACT_EMAIL = "support@weedzilla.app";
 const EFFECTIVE_DATE = "1 May 2025";
 
 export default function PrivacyPage() {

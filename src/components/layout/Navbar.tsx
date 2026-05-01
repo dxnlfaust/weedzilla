@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { CrownBadge } from "@/components/profile/CrownBadge";
 import { UploadPopover } from "./UploadPopover";
-import { Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell } from "lucide-react";
+import { Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell, Shield } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { avatarSm } from "@/lib/utils/image";
@@ -142,6 +142,15 @@ export function Navbar() {
                         >
                           <Info className="h-4 w-4 text-gray-400" />
                           About
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          href="/privacy"
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                        >
+                          <Shield className="h-4 w-4 text-gray-400" />
+                          Privacy Policy
                         </Link>
                       </MenuItem>
                       <div className="border-t border-gray-100 my-1" />

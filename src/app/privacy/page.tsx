@@ -165,10 +165,18 @@ export default function PrivacyPage() {
           </a>
         </Section>
 
-        <p className="text-xs text-gray-400 pt-2 border-t border-gray-100">
-          This policy may be updated from time to time. Continued use of WeedZilla after
-          changes are posted constitutes acceptance of the revised policy.
-        </p>
+        <div className="pt-2 border-t border-gray-100 space-y-1">
+          <p className="text-xs text-gray-400">
+            This policy may be updated from time to time. Continued use of WeedZilla after
+            changes are posted constitutes acceptance of the revised policy.
+          </p>
+          <p className="text-xs text-gray-400">
+            See also:{" "}
+            <a href="/csae" className="text-eucalypt underline hover:text-eucalypt-dark">
+              Child Safety Policy
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

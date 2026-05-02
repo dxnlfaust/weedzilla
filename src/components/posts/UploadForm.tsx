@@ -260,7 +260,7 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
                 Drag and drop your photo here, or click to browse
               </p>
               <p className="text-xs text-gray-400">
-                JPEG, PNG, WebP, or HEIC — max 10MB
+                JPEG, PNG, WebP, or HEIC — max 50MB
               </p>
             </div>
           )}
@@ -304,7 +304,7 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
               <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-gray-300 hover:border-eucalypt rounded-lg cursor-pointer transition-colors duration-150">
                 <ImageIcon className="h-8 w-8 text-gray-400 mb-2" />
                 <p className="text-sm text-gray-500">Click to select before photo</p>
-                <p className="text-xs text-gray-400">JPEG, PNG, WebP, or HEIC — max 10MB</p>
+                <p className="text-xs text-gray-400">JPEG, PNG, WebP, or HEIC — max 50MB</p>
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp,image/heic"
@@ -344,7 +344,7 @@ export function UploadForm({ userId, accountCreatedAt, postType }: UploadFormPro
               <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-gray-300 hover:border-eucalypt rounded-lg cursor-pointer transition-colors duration-150">
                 <ImageIcon className="h-8 w-8 text-gray-400 mb-2" />
                 <p className="text-sm text-gray-500">Click to select after photo</p>
-                <p className="text-xs text-gray-400">JPEG, PNG, WebP, or HEIC — max 10MB</p>
+                <p className="text-xs text-gray-400">JPEG, PNG, WebP, or HEIC — max 50MB</p>
                 <input
                   ref={afterFileInputRef}
                   type="file"

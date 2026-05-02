@@ -44,7 +44,7 @@ export async function uploadPostImage(
 }
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50MB — canvas resizes before upload, limit is just a memory guard
 
 export function validateImageFile(
   file: File
@@ -56,7 +56,7 @@ export function validateImageFile(
     };
   }
   if (file.size > MAX_SIZE_BYTES) {
-    return { valid: false, error: "File size must be under 10MB." };
+    return { valid: false, error: "File size must be under 50MB." };
   }
   return { valid: true };
 }

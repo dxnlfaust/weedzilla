@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 export function useAuth() {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [crownCount, setCrownCount] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -56,6 +58,7 @@ export function useAuth() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    router.push("/login");
   };
 
   return { user, crownCount, avatarUrl, displayName, unreadCount, setUnreadCount, loading, signOut };

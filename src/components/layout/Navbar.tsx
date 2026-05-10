@@ -26,6 +26,7 @@ function getPageTitle(pathname: string): string {
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return "Admin";
   if (pathname === "/privacy") return "Privacy Policy";
   if (pathname === "/csae") return "Child Safety Policy";
+  if (pathname === "/reset-password") return "Reset Password";
   return "";
 }
 

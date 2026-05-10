@@ -32,11 +32,11 @@ export function ProfileEditForm({
     setUploadingAvatar(true);
     const supabase = createClient();
     const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-    const filePath = `${userId}/avatar.${ext}`;
+    const filePath = `${userId}/avatar-${Date.now()}.${ext}`;
 
     const { error: uploadError } = await supabase.storage
       .from("post-images")
-      .upload(filePath, file, { contentType: file.type, upsert: true });
+      .upload(filePath, file, { contentType: file.type, upsert: false });
 
     if (uploadError) {
       toast.error("Failed to upload avatar.");
@@ -48,8 +48,21 @@ export function ProfileEditForm({
       .from("post-images")
       .getPublicUrl(filePath);
 
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ avatar_url: data.publicUrl })
+      .eq("id", userId);
+
+    if (updateError) {
+      toast.error("Failed to update profile picture.");
+      setUploadingAvatar(false);
+      return;
+    }
+
     setAvatarUrl(data.publicUrl);
+    toast.success("Profile picture updated!");
     setUploadingAvatar(false);
+    router.refresh();
   }
 
   async function handleSave(e: React.FormEvent) {

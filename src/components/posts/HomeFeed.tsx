@@ -171,7 +171,14 @@ export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: Home
     }
   }, []);
 
-  const hasCurrentPosts = posts.length > 0 || initialPosts.length > 0;
+  const filteredOlderPosts = olderPosts
+    .filter((p) => typeFilter === "all" || p.post_type === typeFilter)
+    .slice()
+    .sort((a, b) =>
+      sortOrder === "top"
+        ? b.vote_count - a.vote_count
+        : new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
   return (
     <div>
@@ -203,8 +210,8 @@ export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: Home
       </div>
 
       {/* No current-week posts: show older posts as fallback */}
-      {posts.length === 0 && !loading && olderPosts.length > 0 ? (
-        <PostGrid posts={olderPosts} />
+      {posts.length === 0 && !loading && filteredOlderPosts.length > 0 ? (
+        <PostGrid posts={filteredOlderPosts} />
       ) : (
         <>
           <PostGrid posts={posts} />
@@ -231,7 +238,7 @@ export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: Home
           )}
 
           {/* Older posts section with divider */}
-          {posts.length > 0 && olderPosts.length > 0 && (
+          {posts.length > 0 && filteredOlderPosts.length > 0 && (
             <div className="mt-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="flex-1 border-t border-gray-200" />
@@ -240,7 +247,7 @@ export function HomeFeed({ initialPosts, olderPosts, currentWeek, userId }: Home
                 </span>
                 <div className="flex-1 border-t border-gray-200" />
               </div>
-              <PostGrid posts={olderPosts} />
+              <PostGrid posts={filteredOlderPosts} />
             </div>
           )}
         </>

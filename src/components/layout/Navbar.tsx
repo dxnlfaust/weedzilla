@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { CrownBadge } from "@/components/profile/CrownBadge";
-import { UploadPopover } from "./UploadPopover";
-import { Upload, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell, Shield } from "lucide-react";
+import { Settings, LogOut, User, LogIn, UserPlus, Info, BarChart3, Bell, Shield } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { avatarSm } from "@/lib/utils/image";
@@ -20,6 +19,7 @@ function getPageTitle(pathname: string): string {
   if (pathname === "/profile") return "Profile";
   if (pathname.startsWith("/profile/")) return "Profile";
   if (pathname === "/notifications") return "Notifications";
+  if (pathname === "/settings") return "Settings";
   if (pathname === "/about") return "About";
   if (pathname === "/login") return "Log In";
   if (pathname === "/signup") return "Sign Up";
@@ -96,7 +96,7 @@ export function Navbar() {
                       <MenuItem>
                         <Link
                           href="/profile"
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
                         >
                           <User className="h-4 w-4 text-gray-400" />
                           Profile
@@ -105,7 +105,7 @@ export function Navbar() {
                       <MenuItem>
                         <Link
                           href="/notifications"
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
                         >
                           <Bell className="h-4 w-4 text-gray-400" />
                           Notifications
@@ -119,28 +119,26 @@ export function Navbar() {
                       <MenuItem>
                         <Link
                           href="/leaderboard"
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
                         >
                           <BarChart3 className="h-4 w-4 text-gray-400" />
                           Leaderboard
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <UploadPopover
-                          isLoggedIn={true}
-                          position="below"
-                          trigger={
-                            <span className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 w-full">
-                              <Upload className="h-4 w-4 text-gray-400" />
-                              Upload
-                            </span>
-                          }
-                        />
+                        <Link
+                          href="/settings"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                        >
+                          <Settings className="h-4 w-4 text-gray-400" />
+                          Settings
+                        </Link>
                       </MenuItem>
+                      <div className="border-t border-gray-100 my-1" />
                       <MenuItem>
                         <Link
                           href="/about"
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
                         >
                           <Info className="h-4 w-4 text-gray-400" />
                           About
@@ -149,7 +147,7 @@ export function Navbar() {
                       <MenuItem>
                         <Link
                           href="/privacy"
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50"
                         >
                           <Shield className="h-4 w-4 text-gray-400" />
                           Privacy Policy
@@ -160,7 +158,7 @@ export function Navbar() {
                         <button
                           type="button"
                           onClick={signOut}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50 w-full text-left"
+                          className="flex items-center gap-2 px-4 py-3 text-sm text-carbon hover:bg-gray-50 data-[focus]:bg-gray-50 w-full text-left"
                         >
                           <LogOut className="h-4 w-4 text-gray-400" />
                           Log out

@@ -1,10 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { UserPosts } from "@/components/profile/UserPosts";
-import { DeleteAccountButton } from "@/components/profile/DeleteAccountButton";
-import { ResetPasswordButton } from "@/components/profile/ResetPasswordButton";
 import type { Profile } from "@/lib/types/database";
 
 export default async function ProfilePage() {
@@ -100,37 +97,12 @@ export default async function ProfilePage() {
         silverCount={silverCount || 0}
         bronzeCount={bronzeCount || 0}
         createdAt={profile.created_at}
+        showSettings
       />
-
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 className="text-lg font-bold text-carbon mb-4">Edit Profile</h2>
-        <ProfileEditForm
-          userId={user.id}
-          initialDisplayName={profile.display_name}
-          initialAvatarUrl={profile.avatar_url}
-          email={user.email || ""}
-        />
-      </div>
 
       <div>
         <h2 className="text-lg font-bold text-carbon mb-4">Your Posts</h2>
         <UserPosts posts={transformedPosts} isOwner />
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold text-carbon mb-1">Change password</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          A reset link will be sent to {user.email}
-        </p>
-        <ResetPasswordButton email={user.email || ""} />
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold text-carbon mb-1">Danger zone</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Permanently delete your account and all associated data.
-        </p>
-        <DeleteAccountButton />
       </div>
     </div>
   );
